@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: grocy
+  name: grocy
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+#    - name: "443"
+#      port: 443
+#      targetPort: 443
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+  selector:
+    name: grocy
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+  labels:
+    name: grocy
+  name: grocy-ingress
+  namespace: grocy
+spec:
+  tls:
+    - hosts:
+        - groceries.example.com
+      secretName: example-com
+  rules:
+    - host: groceries.example.com
+      http:
+        paths:
+          - backend:
+              serviceName: grocy
+              servicePort: 80
+            path: /

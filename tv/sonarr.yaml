@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr-deployment
+  namespace: media
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: linuxserver/sonarr
+          ports:
+            - containerPort: 7979
+          volumeMounts:
+            - mountPath: /config
+              name: sonarr-config
+            - mountPath: /nfs
+              name: nfs-volume
+      volumes:
+        - name: nfs-volume
+          nfs:
+             server: 192.168.1.99
+             path: /f/media
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonar-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr-service
+  namespace: media
+spec:
+  ports:
+    - protocol: TCP
+      name: "7979"
+      port: 7979
+  selector:
+    app: sonarr
+  type: LoadBalancer
+  externalTrafficPolicy: Local

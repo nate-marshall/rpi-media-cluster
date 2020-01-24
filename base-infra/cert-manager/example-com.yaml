@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-key
+  namespace: cert-manager
+type: Opaque
+data:
+  api-key: a
+
+#---
+#apiVersion: cert-manager.io/v1alpha2
+#kind: ClusterIssuer
+#metadata:
+#  name: letsencrypt-staging
+#spec:
+#  acme:
+#    server: https://acme-staging-v02.api.letsencrypt.org/directory
+#    email: support@example.com
+#    privateKeySecretRef:
+#      name: letsencrypt-staging
+#    solvers:
+#    - dns01:
+#        cloudflare:
+#          email: support@example.com
+#          apiKeySecretRef:
+#            name: cloudflare-api-key
+#            key: api-key
+#      selector:
+#        dnsNames:
+#          - "example.com"
+#          - "*.example.com"
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: support@example.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - dns01:
+          cloudflare:
+            email: support@example.com
+            apiKeySecretRef:
+              name: cloudflare-api-key
+              key: api-key
+        selector:
+          dnsNames:
+            - "example.com"
+            - "*.example.com"
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: example-com
+  namespace: grocy
+spec:
+  secretName: example-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: 'example.com'
+  dnsNames:
+    - "example.com"
+    - "*.example.com"

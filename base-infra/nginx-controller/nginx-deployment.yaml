@@ -1,0 +1,86 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-ingress-controller
+  namespace: infra
+  labels:
+    app: nginx-ingress
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-ingress
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+        component: "controller"
+        release: nginx-ingress
+    spec:
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: nginx-ingress-controller
+          image: "quay.io/kubernetes-ingress-controller/nginx-ingress-controller-arm:0.26.2"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /nginx-ingress-controller
+            - --configmap=$(POD_NAMESPACE)/nginx-config
+          envFrom:
+          - configMapRef:
+              name: nginx-config
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+          - name: nginx-config
+            mountPath: /etc/config
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+              hostPort: 80
+            - name: https
+              containerPort: 443
+              protocol: TCP
+              hostPort: 443
+            - name: stats
+              containerPort: 18080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+      serviceAccountName: nginx-ingress
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - configMap:
+          name: nginx-config
+        name: nginx-config

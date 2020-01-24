@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr-deployment
+  namespace: media
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: linuxserver/radarr
+          ports:
+            - containerPort: 7878
+          volumeMounts:
+            - mountPath: /config
+              name: radarr-config
+            - mountPath: /nfs
+              name: nfs-volume
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: 192.168.1.99
+            path: /f/media
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr-service
+  namespace: media
+spec:
+  ports:
+    - protocol: TCP
+      name: "7878"
+      port: 7878
+  selector:
+    app: radarr
+  type: LoadBalancer
+  externalTrafficPolicy: Local

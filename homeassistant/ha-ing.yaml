@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/name: home-assistant
+  name: ha-home-assistant
+  namespace: ha
+spec:
+  rules:
+  - host: home-assistant.local
+    http:
+      paths:
+      - backend:
+          serviceName: ha-home-assistant
+          servicePort: 8123
+        path: /

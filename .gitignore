@@ -1,0 +1,10 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+_archive/
+base-infra/cert-manager/m5-com.yaml
+grocy/grocy-ingress-m5.yaml
+homeassistant/ha-secrets-m5.yaml

@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vpn-deployment
+  namespace: media
+  labels:
+    app: vpn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vpn
+  template:
+    metadata:
+      labels:
+        app: vpn
+    spec:
+      containers:
+        - name: vpn
+          image: linuxserver/vpn
+          ports:
+            - containerPort: 5075
+          volumeMounts:
+            - mountPath: /config
+              name: vpn-config
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: 192.168.1.99
+            path: /f/media
+        - name: vpn-config
+          persistentVolumeClaim:
+            claimName: vpn-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vpn-service
+  namespace: media
+spec:
+  ports:
+    - protocol: TCP
+      name: "5075"
+      port: 5075
+#      targetPort: 5075
+  selector:
+    app: vpn
+  type: LoadBalancer
+  externalTrafficPolicy: Local

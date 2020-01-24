@@ -1,0 +1,107 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex-deployment
+  namespace: media
+  labels:
+    app: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      hostNetwork: true
+      containers:
+        - name: plex
+          image: linuxserver/plex:arm32v7-latest
+          imagePullPolicy: Always
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: VERSION
+              value: "docker"
+            - name: UMASK_SET
+              value: "022"
+#          ports:
+#            - name: "32400udp"
+#              containerPort: 32400
+#              protocol: UDP
+#            - name: "32400tcp"
+#              containerPort: 32400
+#              protocol: TCP
+#            - name: "32469udp"
+#              containerPort: 32469
+#              protocol: UDP
+#            - name: "32469tcp"
+#              containerPort: 32469
+#              protocol: TCP
+#            - name: "5353udp"
+#              containerPort: 5353
+#              protocol: UDP
+#            - name: "1900udp"
+#              containerPort: 1900
+#              protocol: UDP
+          volumeMounts:
+            - mountPath: /config
+              name: plex-config
+            - mountPath: /nfs
+              name: nfs-volume
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: 192.168.1.99
+            path: /f/media
+        - name: plex-config
+          persistentVolumeClaim:
+            claimName: plex-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-tcp-service
+  namespace: media
+spec:
+  ports:
+    - protocol: TCP
+      name: "32400tcp"
+      port: 32400
+    - protocol: TCP
+      name: "32469tcp"
+      port: 32469
+  selector:
+    app: plex
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-udp-service
+  namespace: media
+spec:
+  ports:
+    - protocol: UDP
+      name: "32400udp"
+      port: 32400
+    - protocol: UDP
+      name: "32469"
+      port: 32469
+    - protocol: UDP
+      name: "5353"
+      port: 5353
+    - protocol: UDP
+      name: "1900"
+      port: 1900
+  selector:
+    app: plex
+  type: LoadBalancer
+  externalTrafficPolicy: Local

@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hydra2-deployment
+  namespace: media
+  labels:
+    app: hydra2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hydra2
+  template:
+    metadata:
+      labels:
+        app: hydra2
+    spec:
+      containers:
+        - name: hydra2
+          image: linuxserver/hydra2
+          ports:
+            - containerPort: 5075
+          volumeMounts:
+            - mountPath: /config
+              name: hydra2-config
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: 192.168.1.99
+            path: /f/media
+        - name: hydra2-config
+          persistentVolumeClaim:
+            claimName: hydra2-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hydra2-service
+  namespace: media
+spec:
+  ports:
+    - protocol: TCP
+      name: "5075"
+      port: 5075
+#      targetPort: 5075
+  selector:
+    app: hydra2
+  type: LoadBalancer
+  externalTrafficPolicy: Local
