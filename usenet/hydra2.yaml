@@ -20,10 +20,12 @@ spec:
         - name: hydra2
           image: linuxserver/hydra2
           ports:
-            - containerPort: 5075
+            - containerPort: 5076
           volumeMounts:
             - mountPath: /config
               name: hydra2-config
+            - mountPath: /nfs
+              name: nfs-volume
       volumes:
         - name: nfs-volume
           nfs:
@@ -41,9 +43,9 @@ metadata:
 spec:
   ports:
     - protocol: TCP
-      name: "5075"
-      port: 5075
-#      targetPort: 5075
+      name: "5076"
+      port: 5076
+#      targetPort: 5076
   selector:
     app: hydra2
   type: LoadBalancer
