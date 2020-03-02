@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: raspberrypi-4
+    volume.kubernetes.io/selected-node: raspberrypi-3
   labels:
     app.kubernetes.io/instance: ha
     app.kubernetes.io/name: home-assistant-0

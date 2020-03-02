@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/name: home-assistant
     spec:
       containers:
-      - image: homeassistant/home-assistant:stable
+      - image: homeassistant/armhf-homeassistant
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5

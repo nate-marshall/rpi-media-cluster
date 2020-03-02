@@ -18,6 +18,7 @@ spec:
     spec:
       containers:
         - name: couchpotato
+#          command: ["tail", "-f", "/dev/null"]
           image: linuxserver/couchpotato
           ports:
             - containerPort: 5050
@@ -29,7 +30,7 @@ spec:
       volumes:
         - name: nfs-volume
           nfs:
-            server: 192.168.1.99
+            server: 192.168.1.13
             path: /f/media
         - name: couchpotato-config
           persistentVolumeClaim:

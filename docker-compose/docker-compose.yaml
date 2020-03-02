@@ -1,0 +1,108 @@
+version: '3'
+services:
+  # HomeAssistant
+  homeassistant:
+    container_name: home-assistant
+    image: homeassistant/home-assistant
+    volumes:
+      # Local path where your home assistant config will be stored
+      - <local config path>:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      # MariaDB is optional (only if you would like to use a different database for HA).
+      - mariadb
+      # Deconz is optional (only if you use the deconz Zigbee hub).
+      - deconz
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  # MariaDb
+  mariadb:
+    image: mariadb/server:10.3
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: ha_db
+      MYSQL_USER: homeassistant
+      MYSQL_PASSWORD: "${HA_MYSQL_PASSWORD}"
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+    volumes:
+      # Local path where the database will be stored.
+      - <local db path>:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # Deconz
+  deconz:
+    container_name: deconz
+    image: marthoc/deconz
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      # You can access Deconz at this port
+      DECONZ_WEB_PORT: 8080
+      DECONZ_WS_PORT: 8088
+
+      # Set VNC_MODE to 0 to disable it completely
+      DECONZ_VNC_MODE: 1
+      DECONZ_VNC_PORT: 5900
+      DECONZ_VNC_PASSWORD: "${VNC_PASSWORD}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      # Replace <local path> with a path where all deconz config will be stored.
+      - <local path>:/root/.local/share/dresden-elektronik/deCONZ
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+
+  # Node-RED
+  nodered:
+    container_name: nodered
+    image: nodered/node-red
+    ports:
+      - "1880:1880"
+    volumes:
+      # Local path where all Node-RED config will be stored.
+      - <local path>:/data
+    depends_on:
+      - homeassistant
+    environment:
+      TZ: "Europe/Amsterdam"
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+    restart: unless-stopped
+
+  # AppDaemon
+  appdaemon:
+    container_name: appdaemon
+    restart: unless-stopped
+    image: acockburn/appdaemon:latest
+    environment:
+      HA_URL: "http://${SERVER_IP}:8123"
+      TOKEN: "${HA_APPDAEMON_KEY}"
+      DASH_URL: "http://${SERVER_IP}:5050"
+    ports:
+      - "5050:5050"
+    volumes:
+      # Set which local directory will contain all your app daemon configuration
+      - <local config>:/conf
+    depends_on:
+      - homeassistant
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  # Visual Studio code
+  vscode:
+    container_name: vscode
+    image: codercom/code-server:v2
+    volumes:
+      # Set <project dir> to the directory you want to open in VS Code.
+      - <project dir>:/home/coder/project
+      # <vs code config> should point to a local dir where vs code stores its data.
+      - <vs code config dir>:/home/coder/.local/share/code-server
+    ports:
+      - "8443:8443"
+    command: code-server --auth password --port 8443 --disable-telemetry /home/coder/project
+    environment:
+      PASSWORD: "${VSCODE_PASSWORD}"
+    restart: unless-stopped

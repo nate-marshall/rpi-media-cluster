@@ -18,7 +18,7 @@ data:
     - name: pod-ralm
       protocol: layer2
       addresses:
-      - 192.168.1.105-192.168.1.115
+      - 192.168.1.175-192.168.1.199
 
 ---
 apiVersion: policy/v1beta1

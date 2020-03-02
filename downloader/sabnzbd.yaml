@@ -27,6 +27,7 @@ spec:
                       - raspberrypi-2
       containers:
         - name: sabnzbd
+#          command: ["tail", "-f", "/dev/null"]
           image: linuxserver/sabnzbd
           imagePullPolicy: IfNotPresent
           ports:
@@ -42,7 +43,7 @@ spec:
       volumes:
         - name: nfs-volume
           nfs:
-            server: 192.168.1.99
+            server: 192.168.1.13
             path: /f/media
         - name: sabnzbd-config
           persistentVolumeClaim:

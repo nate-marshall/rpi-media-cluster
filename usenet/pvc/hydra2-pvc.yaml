@@ -6,7 +6,7 @@ metadata:
   namespace: media
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: raspberrypi-1
+    volume.kubernetes.io/selected-node: raspberrypi-2
 spec:
   accessModes:
     - ReadWriteOnce

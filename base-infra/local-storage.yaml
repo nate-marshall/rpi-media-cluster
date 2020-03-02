@@ -107,7 +107,7 @@ data:
                     "paths":["/opt/local-path-provisioner"]
             },
             {
-                   "node":"raspberrypi-1",
+                   "node":"raspberrypi-2",
                    "paths":["/mnt/pvc"]
             },
             {
