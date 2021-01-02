@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: barcodebuddy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: barcodebuddy
+  template:
+    metadata:
+      labels:
+        name: barcodebuddy
+    spec:
+      containers:
+        - name: barcodebuddy
+          imagePullPolicy: Always
+          image: f0rc3/barcodebuddy-docker:latest
+          ports:
+            - containerPort: 80
+---

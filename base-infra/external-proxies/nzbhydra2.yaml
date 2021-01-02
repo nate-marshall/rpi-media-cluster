@@ -1,0 +1,21 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nzbhydra2-service
+  namespace: infra
+spec:
+  ports:
+    - protocol: TCP
+      port: 5076
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: nzbhydra2-service
+  namespace: infra
+subsets:
+  - addresses:
+      - ip: x.x.x.13
+    ports:
+      - port: 5076

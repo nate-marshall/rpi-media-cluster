@@ -6,8 +6,9 @@ metadata:
   name: prometheus-k8s
   namespace: monitoring
 spec:
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+#  type: LoadBalancer
+#  externalTrafficPolicy: Local
+  type: NodePort
   ports:
   - name: web
     port: 9090

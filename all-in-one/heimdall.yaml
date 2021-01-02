@@ -20,7 +20,7 @@ spec:
         - name: heimdall
           image: linuxserver/heimdall:arm32v7-latest
           ports:
-            - containerPort: 81
+            - containerPort: 8080
 #            - containerPort: 443
           volumeMounts:
             - mountPath: /config
@@ -53,8 +53,8 @@ metadata:
 spec:
   ports:
     - protocol: TCP
-      name: "81"
-      port: 81
+      name: "8080"
+      port: 8080
 #    - protocol: TCP
 #      name: "443"
 #      port: 443

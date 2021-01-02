@@ -1,0 +1,73 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: example-com
+  namespace: infra
+spec:
+  secretName: example-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: 'example.com'
+  dnsNames:
+    - "example.com"
+    - "*.example.com"
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: external-proxies-ingress
+  namespace: infra
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+    - host: media.example.com
+      http:
+        paths:
+          - path: /sonarr
+            backend:
+              serviceName: sonarr-service
+              servicePort: 8989
+          - path: /radarr
+            backend:
+              serviceName: radarr-service
+              servicePort: 7878
+          - path: /lidarr
+            backend:
+              serviceName: lidarr-service
+              servicePort: 8686
+          - path: /sabnzbd
+            backend:
+              serviceName: sab-service
+              servicePort: 8080
+  tls:
+    - hosts:
+        - "media.example.com"
+      secretName: example-com
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: homeassistant-ingress
+  namespace: infra
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: 'true'
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+    - host: homeassistant.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: ha-service
+              servicePort: 8123
+  tls:
+    - hosts:
+        - "homeassistant.example.com"
+      secretName: example-com

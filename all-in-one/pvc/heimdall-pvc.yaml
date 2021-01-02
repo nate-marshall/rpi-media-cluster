@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sonar-config-pvc
+  name: heimdall-config-pvc
   namespace: media
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
@@ -13,4 +13,4 @@ spec:
   storageClassName: local-path
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi

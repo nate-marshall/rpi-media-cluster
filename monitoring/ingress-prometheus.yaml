@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 spec:
   rules:
-  - host: prometheus.192.168.1.35.mymarshall5.com
+  - host: prometheus.x.x.x.35.example.com
     http:
       paths:
       - backend:

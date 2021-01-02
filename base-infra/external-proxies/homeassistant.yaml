@@ -1,0 +1,21 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ha-service
+  namespace: infra
+spec:
+  ports:
+    - protocol: TCP
+      port: 8123
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: ha-service
+  namespace: infra
+subsets:
+  - addresses:
+      - ip: x.x.x.109
+    ports:
+      - port: 8123

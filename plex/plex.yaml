@@ -57,7 +57,7 @@ spec:
       volumes:
         - name: nfs-volume
           nfs:
-            server: 192.168.1.13
+            server: x.x.x.13
             path: /f/media
         - name: plex-config
           persistentVolumeClaim:

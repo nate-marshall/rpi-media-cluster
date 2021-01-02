@@ -1,0 +1,21 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: plex-service
+  namespace: infra
+spec:
+  ports:
+    - protocol: TCP
+      port: 32400
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: plex-service
+  namespace: infra
+subsets:
+  - addresses:
+      - ip: x.x.x.60
+    ports:
+      - port: 32400

@@ -19,19 +19,32 @@ spec:
       containers:
         - name: sonarr
 #          command: ["tail", "-f", "/dev/null"]
+          imagePullPolicy: Always
           image: linuxserver/sonarr
           ports:
-            - containerPort: 7979
+            - containerPort: 8989
           volumeMounts:
             - mountPath: /config
               name: sonarr-config
-            - mountPath: /nfs
-              name: nfs-volume
+            - mountPath: /nfs/media/series
+              name: nfs-series
+            - mountPath: /nfs/media/familytv
+              name: nfs-familytv
+            - mountPath: /nfs/downloads
+              name: nfs-downloads
       volumes:
-        - name: nfs-volume
+        - name: nfs-series
           nfs:
-             server: 192.168.1.13
-             path: /f/media
+            server: x.x.x.249
+            path: /media/nate/MediaFiles2/media/series
+        - name: nfs-familytv
+          nfs:
+            server: x.x.x.249
+            path: /media/nate/MediaFiles/media/familytv
+        - name: nfs-downloads
+          nfs:
+            server: x.x.x.249
+            path: /media/nate/MediaFiles/downloads
         - name: sonarr-config
           persistentVolumeClaim:
             claimName: sonar-config-pvc
@@ -42,10 +55,11 @@ metadata:
   name: sonarr-service
   namespace: media
 spec:
+  loadBalancerIP: x.x.x.189
   ports:
     - protocol: TCP
-      name: "7979"
-      port: 7979
+      name: "8989"
+      port: 8989
   selector:
     app: sonarr
   type: LoadBalancer
