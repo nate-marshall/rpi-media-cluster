@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   labels:
     name: grocy
+    namespace: grocy
   name: grocy
 spec:
   selector:
@@ -30,7 +31,8 @@ spec:
           #        - name: PHP_MEMORY_LIMIT
           #          value: 512M
           #        image: grocy/grocy-docker:grocy
-          image: linuxserver/grocy:arm32v7-v2.5.2-ls44
+          # image: linuxserver/grocy:arm32v7-v2.5.2-ls44
+          image: linuxserver/grocy:arm32v7-latest
           name: grocy
           ports:
             - containerPort: 9000

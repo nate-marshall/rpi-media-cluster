@@ -3,6 +3,7 @@ kind: Service
 metadata:
   labels:
     name: grocy
+    namespace: grocy
   name: grocy
 spec:
   ports:
@@ -24,10 +25,12 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
   labels:
     name: grocy
+    namespace: grocy
   name: grocy-ingress
   namespace: grocy
 spec:

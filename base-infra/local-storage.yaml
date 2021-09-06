@@ -105,18 +105,6 @@ data:
             {
                     "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
                     "paths":["/opt/local-path-provisioner"]
-            },
-            {
-                   "node":"raspberrypi-2",
-                   "paths":["/mnt/pvc"]
-            },
-            {
-                   "node":"raspberrypi-2",
-                   "paths":["/mnt/pvc"]
-            },
-            {
-                   "node":"raspberrypi-3",
-                   "paths":["/mnt/mediastorage"]
             }
             ]
     }
