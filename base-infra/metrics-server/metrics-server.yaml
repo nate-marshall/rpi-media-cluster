@@ -92,8 +92,8 @@ spec:
       labels:
         k8s-app: metrics-server
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: raspberrypi-1
+#      nodeSelector:
+#        kubernetes.io/hostname: raspberrypi-1
       serviceAccountName: metrics-server
       volumes:
         # mount in tmp so we can safely use from-scratch images and/or read-only containers

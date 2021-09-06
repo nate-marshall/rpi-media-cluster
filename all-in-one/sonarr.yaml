@@ -2,49 +2,51 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vpn-deployment
+  name: sonarr-deployment
   namespace: media
   labels:
-    app: vpn
+    app: sonarr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vpn
+      app: sonarr
   template:
     metadata:
       labels:
-        app: vpn
+        app: sonarr
     spec:
       containers:
-        - name: vpn
-          image: linuxserver/vpn
+        - name: sonarr
+#          command: ["tail", "-f", "/dev/null"]
+          image: linuxserver/sonarr
           ports:
-            - containerPort: 5075
+            - containerPort: 7979
           volumeMounts:
             - mountPath: /config
-              name: vpn-config
+              name: sonarr-config
+            - mountPath: /nfs
+              name: nfs-volume
       volumes:
         - name: nfs-volume
           nfs:
-            server: x.x.x.13
-            path: /f/media
-        - name: vpn-config
+             server: x.x.x.13
+             path: /f/media
+        - name: sonarr-config
           persistentVolumeClaim:
-            claimName: vpn-config-pvc
+            claimName: sonar-config-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: vpn-service
+  name: sonarr-service
   namespace: media
 spec:
   ports:
     - protocol: TCP
-      name: "5075"
-      port: 5075
-#      targetPort: 5075
+      name: "7979"
+      port: 7979
   selector:
-    app: vpn
+    app: sonarr
   type: LoadBalancer
   externalTrafficPolicy: Local
