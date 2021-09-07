@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr-deployment
+  namespace: media
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+#          command: ["tail", "-f", "/dev/null"]
+          imagePullPolicy: Always
+          image: linuxserver/sonarr
+          ports:
+            - containerPort: 8989
+          volumeMounts:
+            - mountPath: /config
+              name: sonarr-config
+            - mountPath: /nfs/media/series
+              name: nfs-series
+            - mountPath: /nfs/media/familytv
+              name: nfs-familytv
+            - mountPath: /nfs/downloads
+              name: nfs-downloads
+      volumes:
+        - name: nfs-series
+          nfs:
+            server: x.x.x.249
+            path: /media/nate/MediaFiles2/media/series
+        - name: nfs-familytv
+          nfs:
+            server: x.x.x.249
+            path: /media/nate/MediaFiles/media/familytv
+        - name: nfs-downloads
+          nfs:
+            server: x.x.x.249
+            path: /media/nate/MediaFiles/downloads
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonar-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr-service
+  namespace: media
+spec:
+  loadBalancerIP: x.x.x.189
+  ports:
+    - protocol: TCP
+      name: "8989"
+      port: 8989
+  selector:
+    app: sonarr
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: raspberrypi-2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overseerr-deployment
+  namespace: media
+  labels:
+    app: overseerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: overseerr
+  template:
+    metadata:
+      labels:
+        app: overseerr
+    spec:
+      containers:
+        - name: overseerr
+#          command: ["tail", "-f", "/dev/null"]
+          imagePullPolicy: Always
+          image: sctx/overseerr:latest
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: TZ
+              value: "America/Chicago"
+          ports:
+            - containerPort: 5055
+          volumeMounts:
+            - mountPath: /app/config
+              name: overseerr-config
+            - mountPath: /nfs
+              name: nfs-volume
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: x.x.x.249
+            path: /media/nate/MediaFiles
+        - name: overseerr-config
+          persistentVolumeClaim:
+            claimName: overseerr-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: overseerr-service
+  namespace: media
+spec:
+  loadBalancerIP: x.x.x.185
+  ports:
+    - protocol: TCP
+      name: "5055"
+      port: 5055
+  selector:
+    app: overseerr
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: overseerr-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: media-ubuntu
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 5Gi

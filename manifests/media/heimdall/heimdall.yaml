@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heimdall-deployment
+  namespace: media
+  labels:
+    app: heimdall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heimdall
+  nodeAffinity:
+    kubernetes.io/arch: arm64
+  template:
+    metadata:
+      labels:
+        app: heimdall
+    spec:
+      containers:
+        - name: heimdall
+          image: linuxserver/heimdall:arm32v7-latest
+          ports:
+            - containerPort: 81
+#            - containerPort: 443
+          volumeMounts:
+            - mountPath: /config
+              name: heimdall-config
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 50m
+            limits:
+              memory: 100Mi
+              cpu: 100m
+          imagePullPolicy: Always
+      volumes:
+        - name: heimdall-config
+          persistentVolumeClaim:
+            claimName: heimdall-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heimdall-service
+  namespace: media
+spec:
+  ports:
+    - protocol: TCP
+      name: "81"
+      port: 81
+#    - protocol: TCP
+#      name: "443"
+#      port: 443
+  selector:
+    app: heimdall
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: heimdall-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: raspberrypi-2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
