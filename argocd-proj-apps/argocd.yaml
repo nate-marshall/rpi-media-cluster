@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argocd-project
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: ArgoCD Project
+  sourceRepos:
+  - '*'
+  destinations:
+  - '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "argocd"
+spec:
+  source:
+    repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
+    targetRevision: master
+    path: manifests/argocd
+  destination:
+    namespace: argocd
+    server: 'https://am-tmna-ops-eastus2-cluster1-b1ae3d54.hcp.eastus2.azmk8s.io:443'
+  project: argocd
+  syncPolicy:
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+    # automated:
+    #   prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+    #   selfHeal: false # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).

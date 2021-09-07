@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: a8s-project
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: a8s Project
+  sourceRepos:
+  - '*'
+  destinations:
+  - '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: a8s
+  namespace: argocd
+spec:
+  project: a8s-project
+  source:
+    helm:
+      parameters:
+        - name: app
+          value: $ARGOCD_APP_NAME
+    chart: datawire/ambassador
+    repoURL: https://www.getambassador.io
+    targetRevision: 6.9.1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: a8s
+  syncPolicy:
+    # automated:
+    #   prune: true
+    #   selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
