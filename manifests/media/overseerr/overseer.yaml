@@ -48,25 +48,19 @@ spec:
           volumeMounts:
             - mountPath: /app/config
               name: overseerr-config
-            - mountPath: /nfs
-              name: nfs-volume
             - mountPath: /mediafiles
               name: media-volume
       dnsConfig:
         nameservers:
           - 1.1.1.1
       volumes:
-        - name: nfs-volume
-          nfs:
-            server: 192.168.1.249
-            path: /media/nate/MediaFiles
-        - name: overseerr-config
-          persistentVolumeClaim:
-            claimName: overseerr-config-pvc
         - name: media-volume
           nfs:
             path: /media/nate/Media12TB
             server: 192.168.1.60
+        - name: overseerr-config
+          persistentVolumeClaim:
+            claimName: overseerr-config-pvc
 ---
 apiVersion: v1
 kind: Service
