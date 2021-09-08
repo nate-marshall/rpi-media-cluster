@@ -4,6 +4,7 @@ metadata:
   name: argocd-repo-server
 spec:
   revisionHistoryLimit: 2
+  replicas: 1
   template:
     spec:
 #      volumes:
