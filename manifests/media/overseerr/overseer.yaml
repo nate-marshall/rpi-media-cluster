@@ -20,7 +20,24 @@ spec:
         - name: overseerr
 #          command: ["tail", "-f", "/dev/null"]
           imagePullPolicy: Always
-          image: sctx/overseerr:latest
+          image: 'linuxserver/overseerr:develop'
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - '-c'
+                - cat /mediafiles/healthy.txt
+            failureThreshold: 3
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 64Mi
           env:
             - name: LOG_LEVEL
               value: "info"
@@ -33,14 +50,23 @@ spec:
               name: overseerr-config
             - mountPath: /nfs
               name: nfs-volume
+            - mountPath: /mediafiles
+              name: media-volume
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       volumes:
         - name: nfs-volume
           nfs:
-            server: x.x.x.249
+            server: 192.168.1.249
             path: /media/nate/MediaFiles
         - name: overseerr-config
           persistentVolumeClaim:
             claimName: overseerr-config-pvc
+        - name: media-volume
+          nfs:
+            path: /media/nate/Media12TB
+            server: 192.168.1.60
 ---
 apiVersion: v1
 kind: Service
@@ -48,7 +74,7 @@ metadata:
   name: overseerr-service
   namespace: media
 spec:
-  loadBalancerIP: x.x.x.185
+  loadBalancerIP: 192.168.1.185
   ports:
     - protocol: TCP
       name: "5055"
