@@ -26,7 +26,7 @@ spec:
     path: manifests/argocd
   destination:
     namespace: argocd
-    server: 'https://am-tmna-ops-eastus2-cluster1-b1ae3d54.hcp.eastus2.azmk8s.io:443'
+    server: https://kubernetes.default.svc
   project: argocd
   syncPolicy:
     syncOptions:
