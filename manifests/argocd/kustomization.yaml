@@ -3,6 +3,11 @@ kind: Kustomization
 resources:
   - https://github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v2.1.1
   - https://github.com/argoproj-labs/argocd-notifications/manifests/controller
-  - resources/argocd-configmap.yaml
-  - resources/argocd-rbac-cm.yaml
+  - ../../argocd-proj-apps
+
+patchesStrategicMerge:
   - resources/argocd-repo-server.yaml
+  - resources/argocd-rbac-cm.yaml
+  - resources/argocd-configmap.yaml
+
+namespace: argocd

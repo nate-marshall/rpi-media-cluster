@@ -10,9 +10,10 @@ metadata:
 spec:
   description: kube-system Project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - '*'
+    - namespace: '*'
+      server: '*'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -28,7 +29,7 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
-  syncPolicy:
+#  syncPolicy:
     # automated:
     #   prune: true
     #   selfHeal: true

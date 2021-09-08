@@ -19,7 +19,18 @@ spec:
       containers:
         - name: radarr
           imagePullPolicy: Always
+          env:
+            - name: "PUID"
+              value: "998" #PLEX
+            - name: "PGID"
+              value: "1002" #MEDIA
           image: linuxserver/radarr
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /media/nate/BlueIris/media_downloads/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt && cat /nfs/media/familymovies/healthy.txt && cat /nfs/media/christmas/healthy.txt
           ports:
             - containerPort: 7878
           volumeMounts:
@@ -31,25 +42,25 @@ spec:
               name: nfs-familymovies
             - mountPath: /nfs/media/christmas
               name: nfs-christmas
-            - mountPath: /nfs/downloads
+            - mountPath: /media/nate/BlueIris/media_downloads
               name: nfs-downloads
       volumes:
         - name: nfs-movies
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/movies
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/movies
         - name: nfs-familymovies
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/familymovies
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/familymovies
         - name: nfs-christmas
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/christmas
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/christmas
         - name: nfs-downloads
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/downloads
+            server: 192.168.1.60
+            path: /media/nate/BlueIris/media_downloads
         - name: radarr-config
           persistentVolumeClaim:
             claimName: radarr-config-pvc
@@ -60,7 +71,7 @@ metadata:
   name: radarr-service
   namespace: media
 spec:
-  loadBalancerIP: x.x.x.178
+  loadBalancerIP: 192.168.1.178
   ports:
     - protocol: TCP
       name: "7878"

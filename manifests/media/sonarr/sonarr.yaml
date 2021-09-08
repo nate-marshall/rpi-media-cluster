@@ -19,8 +19,21 @@ spec:
       containers:
         - name: sonarr
 #          command: ["tail", "-f", "/dev/null"]
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /media/nate/BlueIris/media_downloads/downloads/healthy.txt && cat /nfs/media/series/healthy.txt && cat /nfs/media/familytv/healthy.txt
+            initialDelaySeconds: 5
+            periodSeconds: 30
           imagePullPolicy: Always
-          image: linuxserver/sonarr
+          env:
+            - name: "PUID"
+              value: "998" #PLEX
+            - name: "PGID"
+              value: "1002" #MEDIA
+          image: linuxserver/sonarr:latest
           ports:
             - containerPort: 8989
           volumeMounts:
@@ -30,21 +43,21 @@ spec:
               name: nfs-series
             - mountPath: /nfs/media/familytv
               name: nfs-familytv
-            - mountPath: /nfs/downloads
+            - mountPath: /media/nate/BlueIris/media_downloads
               name: nfs-downloads
       volumes:
         - name: nfs-series
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles2/media/series
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/series
         - name: nfs-familytv
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/familytv
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/familytv
         - name: nfs-downloads
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/downloads
+            server: 192.168.1.60
+            path: /media/nate/BlueIris/media_downloads
         - name: sonarr-config
           persistentVolumeClaim:
             claimName: sonar-config-pvc
@@ -55,7 +68,7 @@ metadata:
   name: sonarr-service
   namespace: media
 spec:
-  loadBalancerIP: x.x.x.189
+  loadBalancerIP: 192.168.1.189
   ports:
     - protocol: TCP
       name: "8989"

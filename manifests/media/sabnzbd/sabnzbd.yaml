@@ -28,6 +28,12 @@ spec:
       containers:
         - name: sabnzbd
 #          command: ["tail", "-f", "/dev/null"]
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /nfs/healthy.txt
           image: linuxserver/sabnzbd
           imagePullPolicy: Always
           ports:
@@ -43,8 +49,8 @@ spec:
       volumes:
         - name: nfs-volume
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles
+            server: 192.168.1.249
+            path: /media/nate/BlueIris/media_downloads
         - name: sabnzbd-config
           persistentVolumeClaim:
             claimName: sabnzbd-config-pvc
@@ -58,7 +64,7 @@ metadata:
   name: sabnzbd-service
   namespace: media
 spec:
-  loadBalancerIP: x.x.x.179
+  loadBalancerIP: 192.168.1.179
   ports:
     - protocol: TCP
       name: "8080"

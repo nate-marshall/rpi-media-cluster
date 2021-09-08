@@ -10,9 +10,10 @@ metadata:
 spec:
   description: a8s Project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - '*'
+    - namespace: '*'
+      server: '*'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
