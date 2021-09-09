@@ -16,6 +16,7 @@ metadata:
 #      proxy_set_header l5d-dst-override argocd-server.argocd.svc.cluster.local:80;
 #      proxy_hide_header l5d-remote-ip;
 #      proxy_hide_header l5d-server-id;
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   tls:
     - hosts:
@@ -29,17 +30,17 @@ spec:
             backend:
               serviceName: argocd-server
               servicePort: 443
----
-apiVersion: cert-manager.io/v1alpha3
-kind: Certificate
-metadata:
-  name: mymarshall5-com
-spec:
-  commonName: mymarshall5.com
-  dnsNames:
-    - mymarshall5.com
-    - '*.mymarshall5.com'
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt-prod
-  secretName: mymarshall5-com
+#---
+#apiVersion: cert-manager.io/v1alpha3
+#kind: Certificate
+#metadata:
+#  name: mymarshall5-com
+#spec:
+#  commonName: mymarshall5.com
+#  dnsNames:
+#    - mymarshall5.com
+#    - '*.mymarshall5.com'
+#  issuerRef:
+#    kind: ClusterIssuer
+#    name: letsencrypt-prod
+#  secretName: mymarshall5-com
