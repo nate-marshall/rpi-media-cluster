@@ -28,15 +28,18 @@ metadata:
 spec:
   project: cert-manager-project
   source:
-    helm:
-      parameters:
-        - name: app
-          value: $ARGOCD_APP_NAME
-        - name: installCRDs
-          value: "true"
-    chart: jetstack/cert-manager
-    repoURL: https://charts.jetstack.io
-    targetRevision: 1.5.3
+    path: cert-manager
+    repoURL: https://github.com/argoproj/argoproj-deployments
+#  source:
+#    helm:
+#      parameters:
+#        - name: app
+#          value: $ARGOCD_APP_NAME
+#        - name: installCRDs
+#          value: "true"
+#    chart: jetstack/cert-manager
+#    repoURL: https://charts.jetstack.io
+#    targetRevision: 1.5.3
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
