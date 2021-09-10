@@ -44,6 +44,9 @@ spec:
               name: nfs-christmas
             - mountPath: /media/nate/BlueIris/media_downloads
               name: nfs-downloads
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       volumes:
         - name: nfs-movies
           nfs:

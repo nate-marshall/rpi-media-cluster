@@ -45,6 +45,9 @@ spec:
               name: nfs-familytv
             - mountPath: /media/nate/BlueIris/media_downloads
               name: nfs-downloads
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       volumes:
         - name: nfs-series
           nfs:
