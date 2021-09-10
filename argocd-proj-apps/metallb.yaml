@@ -26,8 +26,20 @@ metadata:
   name: metallb
   namespace: argocd
 spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb
+  syncPolicy:
+    # automated:
+    #   prune: true
+    #   selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   project: metallb-project
   source:
+    chart: metallb/metallb
+    repoURL: https://metallb.github.io/metallb
+    targetRevision: 0.10.2
     helm:
       parameters:
         - name: app
@@ -39,15 +51,3 @@ spec:
           protocol: layer2
           addresses:
           - 192.168.1.175-192.168.1.199
-    chart: metallb/metallb
-    repoURL: https://metallb.github.io/metallb
-    targetRevision: 0.10.2
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: metallb
-  syncPolicy:
-    # automated:
-    #   prune: true
-    #   selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
