@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - a8s.yaml
   - argocd.yaml
-  - cert-manager.yaml
+#   - cert-manager.yaml
   - kube-system.yaml
   - media.yaml
   - metallb.yaml
