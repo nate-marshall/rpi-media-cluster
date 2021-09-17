@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - argocd.yaml
   - cert-manager.yaml
+  - haproxy.yaml
   - kube-system.yaml
   - media.yaml
   - metallb.yaml
