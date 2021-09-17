@@ -27,15 +27,20 @@ metadata:
   namespace: argocd
 spec:
   project: prometheus-project
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: prometheus
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
   source:
-    path: prometheus-operator
-    repoURL: https://github.com/argoproj/argoproj-deployments
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: prometheus
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+      chart: prometheus
+      helm:
+        values: |
+          pushgateway:
+            enabled: false
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 14.6.1

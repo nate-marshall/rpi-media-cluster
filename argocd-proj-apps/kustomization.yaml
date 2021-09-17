@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - a8s.yaml
+#   - a8s.yaml
   - argocd.yaml
   - cert-manager.yaml
   - kube-system.yaml
   - media.yaml
   - metallb.yaml
-#   - prometheus.yaml
+  - prometheus.yaml
