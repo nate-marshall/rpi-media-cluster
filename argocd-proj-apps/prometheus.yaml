@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: cert-manager-project
+  name: prometheus-project
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: cert-manager Project
+  description: prometheus Project
   sourceRepos:
     - "*"
   destinations:
@@ -23,16 +23,16 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: prometheus
   namespace: argocd
 spec:
-  project: cert-manager-project
+  project: prometheus-project
   source:
-    path: cert-manager
+    path: prometheus-operator
     repoURL: https://github.com/argoproj/argoproj-deployments
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: prometheus
   syncPolicy:
     automated:
       prune: true
