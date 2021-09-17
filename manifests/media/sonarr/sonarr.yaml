@@ -52,7 +52,7 @@ spec:
         - name: nfs-series
           nfs:
             server: 192.168.1.60
-            path: /media/nate/Media12TB/media/series
+            path: /media/nate/easystore_5TB/series
         - name: nfs-familytv
           nfs:
             server: 192.168.1.60
