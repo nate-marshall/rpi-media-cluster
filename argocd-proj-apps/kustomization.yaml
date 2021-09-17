@@ -7,4 +7,4 @@ resources:
   - kube-system.yaml
   - media.yaml
   - metallb.yaml
-  - prometheus.yaml
+#   - prometheus.yaml
