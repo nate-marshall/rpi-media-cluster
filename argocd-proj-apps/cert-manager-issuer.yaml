@@ -28,7 +28,7 @@ metadata:
 spec:
   project: cert-manager-issuer-project
   source:
-    repoURL: https://github.com/nate-marshall/rpi-cert-manager-issuer-cluster.git
+    repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
     targetRevision: master
     path: manifests/cert-manager-issuer
   destination:
