@@ -11,8 +11,6 @@ spec:
   selector:
     matchLabels:
       app: heimdall
-  nodeAffinity:
-    kubernetes.io/arch: arm64
   template:
     metadata:
       labels:
@@ -64,7 +62,7 @@ spec:
     app: heimdall
   type: LoadBalancer
   externalTrafficPolicy: Local
-  ---
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

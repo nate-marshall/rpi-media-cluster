@@ -30,7 +30,7 @@ spec:
       volumes:
         - name: nfs-volume
           nfs:
-            server: x.x.x.13
+            server: 192.168.1.13
             path: /f/media
         - name: couchpotato-config
           persistentVolumeClaim:

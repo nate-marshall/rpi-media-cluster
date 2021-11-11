@@ -16,6 +16,6 @@ metadata:
   namespace: infra
 subsets:
   - addresses:
-      - ip: x.x.x.109
+      - ip: 192.168.1.109
     ports:
       - port: 8123

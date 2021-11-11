@@ -19,6 +19,10 @@ spec:
       containers:
         - name: radarr
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+              memory: 750Mi
           image: linuxserver/radarr
           ports:
             - containerPort: 7878
@@ -29,27 +33,21 @@ spec:
               name: nfs-movies
             - mountPath: /nfs/media/familymovies
               name: nfs-familymovies
-            - mountPath: /nfs/media/christmas
-              name: nfs-christmas
             - mountPath: /nfs/downloads
               name: nfs-downloads
       volumes:
         - name: nfs-movies
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/movies
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/movies
         - name: nfs-familymovies
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/familymovies
-        - name: nfs-christmas
-          nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/media/christmas
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/familymovies
         - name: nfs-downloads
           nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles/downloads
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/downloads
         - name: radarr-config
           persistentVolumeClaim:
             claimName: radarr-config-pvc
@@ -60,7 +58,7 @@ metadata:
   name: radarr-service
   namespace: media
 spec:
-  loadBalancerIP: x.x.x.178
+  loadBalancerIP: 192.168.1.178
   ports:
     - protocol: TCP
       name: "7878"

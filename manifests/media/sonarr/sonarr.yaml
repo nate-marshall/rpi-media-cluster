@@ -21,29 +21,27 @@ spec:
 #          command: ["tail", "-f", "/dev/null"]
           imagePullPolicy: Always
           image: linuxserver/sonarr
+          resources:
+            limits:
+              cpu: 500m
+              memory: 750Mi
           ports:
             - containerPort: 8989
           volumeMounts:
             - mountPath: /config
               name: sonarr-config
-            - mountPath: /nfs/media/series
-              name: nfs-series
             - mountPath: /nfs/media/familytv
               name: nfs-familytv
             - mountPath: /nfs/downloads
               name: nfs-downloads
       volumes:
-        - name: nfs-series
-          nfs:
-            server: x.x.x.249
-            path: /media/nate/MediaFiles2/media/series
         - name: nfs-familytv
           nfs:
-            server: x.x.x.249
+            server: 192.168.1.60
             path: /media/nate/MediaFiles/media/familytv
         - name: nfs-downloads
           nfs:
-            server: x.x.x.249
+            server: 192.168.1.60
             path: /media/nate/MediaFiles/downloads
         - name: sonarr-config
           persistentVolumeClaim:
@@ -55,7 +53,7 @@ metadata:
   name: sonarr-service
   namespace: media
 spec:
-  loadBalancerIP: x.x.x.189
+  loadBalancerIP: 192.168.1.189
   ports:
     - protocol: TCP
       name: "8989"
