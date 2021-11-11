@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: falcon-fpp-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: media-ubuntu
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: falcon-fpp
+  name: falcon-fpp
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: falcon-fpp
+  template:
+    metadata:
+      labels:
+        app: falcon-fpp
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      containers:
+      - env:
+        - name: FPP_DOCKER_IP
+          value: 192.168.1.197
+        - name: TZ
+          value: America/Chicago
+        image: falconchristmas/fpp:latest
+        name: falcon-fpp
+        ports:
+        - containerPort: 80
+        - containerPort: 4048
+          protocol: UDP
+        - containerPort: 5568
+          protocol: UDP
+        - containerPort: 32320
+          protocol: UDP
+        - containerPort: 32322
+        - containerPort: 32328
+        resources: {}
+        volumeMounts:
+        - mountPath: /home/fpp/media
+          name: falcon-fpp-config
+      hostname: falcon-fpp
+      restartPolicy: Always
+      volumes:
+      - name: falcon-fpp-config
+        persistentVolumeClaim:
+          claimName: falcon-fpp-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: falcon-fpp
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.197
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 80
+  # - name: "4048"
+  #   port: 4048
+  #   protocol: UDP
+  # - name: "5568"
+  #   port: 5568
+  #   protocol: UDP
+  # - name: "32320"
+  #   port: 32320
+  #   protocol: UDP
+  # - name: "32322"
+  #   port: 32322
+  # - name: "32328"
+  #   port: 32328
+  selector:
+    app: falcon-fpp
