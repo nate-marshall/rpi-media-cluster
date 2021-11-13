@@ -10,9 +10,15 @@ metadata:
 spec:
   description: cert-manager Project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - '*'
+    - namespace: '*'
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  orphanedResources:
+    warn: false
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -22,21 +28,14 @@ metadata:
 spec:
   project: cert-manager-project
   source:
-    helm:
-      parameters:
-        - name: app
-          value: $ARGOCD_APP_NAME
-        - name: installCRDs
-          value: "true"
-    chart: jetstack/cert-manager
-    repoURL: https://charts.jetstack.io
-    targetRevision: 1.5.3
+    path: cert-manager
+    repoURL: https://github.com/argoproj/argoproj-deployments
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
   syncPolicy:
-    # automated:
-    #   prune: true
-    #   selfHeal: true
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true

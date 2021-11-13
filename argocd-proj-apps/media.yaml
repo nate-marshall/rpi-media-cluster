@@ -10,9 +10,15 @@ metadata:
 spec:
   description: Media Project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - '*'
+    - namespace: '*'
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  orphanedResources:
+    warn: false
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -29,8 +35,8 @@ spec:
     server: https://kubernetes.default.svc
     namespace: media
   syncPolicy:
-    # automated:
-    #   prune: true
-    #   selfHeal: true
+    automated:
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true

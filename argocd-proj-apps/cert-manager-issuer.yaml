@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: kube-system-project
+  name: cert-manager-issuer-project
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: kube-system Project
+  description: cert-manager-issuer Project
   sourceRepos:
     - "*"
   destinations:
@@ -23,20 +23,20 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-system
+  name: cert-manager-issuer
   namespace: argocd
 spec:
-  project: kube-system-project
+  project: cert-manager-issuer-project
   source:
     repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
     targetRevision: master
-    path: manifests/kube-system
+    path: manifests/cert-manager-issuer
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    # syncOptions:
-    #   - CreateNamespace=true
+    syncOptions:
+      - CreateNamespace=true

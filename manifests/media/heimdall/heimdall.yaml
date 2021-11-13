@@ -16,6 +16,8 @@ spec:
       labels:
         app: heimdall
     spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
       containers:
         - name: heimdall
           image: linuxserver/heimdall:arm32v7-latest

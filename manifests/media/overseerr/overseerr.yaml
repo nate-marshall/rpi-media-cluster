@@ -35,10 +35,13 @@ spec:
           volumeMounts:
             - mountPath: /app/config
               name: overseerr-config
-            - mountPath: /nfs
-              name: nfs-volume
+            - mountPath: /mediafiles
+              name: media-volume
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       volumes:
-        - name: nfs-volume
+        - name: media-volume
           nfs:
             server: 192.168.1.60
             path: /media/nate/Media12TB
@@ -69,7 +72,7 @@ metadata:
   namespace: media
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: media-ubuntu
+    volume.kubernetes.io/selected-node: raspberrypi-3
 spec:
   accessModes:
     - ReadWriteOnce

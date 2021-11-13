@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: kube-system-project
+  name: prometheus-project
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: kube-system Project
+  description: prometheus Project
   sourceRepos:
     - "*"
   destinations:
@@ -23,20 +23,28 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-system
+  name: prometheus
   namespace: argocd
 spec:
-  project: kube-system-project
-  source:
-    repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
-    targetRevision: master
-    path: manifests/kube-system
+  project: prometheus-project
   destination:
     server: https://kubernetes.default.svc
-    namespace: kube-system
+    namespace: prometheus
+  source:
+    chart: prometheus
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 14.6.1
+    helm:
+      values: |
+        pushgateway:
+          enabled: false
+        server:
+          service:
+            type: LoadBalancer
+            loadBalancerIP: "192.168.1.198"
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    # syncOptions:
-    #   - CreateNamespace=true
+    syncOptions:
+      - CreateNamespace=true

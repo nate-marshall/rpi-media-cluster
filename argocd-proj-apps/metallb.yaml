@@ -10,9 +10,15 @@ metadata:
 spec:
   description: metallb Project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - '*'
+    - namespace: '*'
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  orphanedResources:
+    warn: false
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -21,27 +27,16 @@ metadata:
   namespace: argocd
 spec:
   project: metallb-project
-  source:
-    helm:
-      parameters:
-        - name: app
-          value: $ARGOCD_APP_NAME
-      values: |
-        configInline:
-          address-pools:
-          - name: default
-          protocol: layer2
-          addresses:
-          - 192.168.1.175-192.168.1.199
-    chart: metallb/metallb
-    repoURL: https://metallb.github.io/metallb
-    targetRevision: 6.9.1
   destination:
     server: https://kubernetes.default.svc
-    namespace: metallb
+    namespace: metallb-system
+  source:
+    repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
+    targetRevision: master
+    path: manifests/metallb
   syncPolicy:
-    # automated:
-    #   prune: true
-    #   selfHeal: true
+#     automated:
+#       prune: true
+#       selfHeal: true
     syncOptions:
       - CreateNamespace=true

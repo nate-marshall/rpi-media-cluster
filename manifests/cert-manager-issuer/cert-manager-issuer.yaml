@@ -1,0 +1,22 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: support@sparlingtech.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - dns01:
+          cloudflare:
+            email: support@sparlingtech.com
+            apiKeySecretRef:
+              name: cloudflare-api-key
+              key: api-key
+        selector:
+          dnsNames:
+            - "mymarshall5.com"
+            - "*.mymarshall5.com"

@@ -24,6 +24,12 @@ spec:
               cpu: 500m
               memory: 750Mi
           image: linuxserver/radarr
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /media/nate/BlueIris/media_downloads/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt && cat /nfs/media/familymovies/healthy.txt && cat /nfs/media/christmas/healthy.txt
           ports:
             - containerPort: 7878
           volumeMounts:
@@ -35,6 +41,9 @@ spec:
               name: nfs-familymovies
             - mountPath: /nfs/downloads
               name: nfs-downloads
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       volumes:
         - name: nfs-movies
           nfs:
