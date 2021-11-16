@@ -56,7 +56,7 @@ spec:
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
-            path: /media/nate/Media12TB/downloads
+            path: /media/nate/BlueIris/media_downloads
         - name: radarr-config
           persistentVolumeClaim:
             claimName: radarr-config-pvc

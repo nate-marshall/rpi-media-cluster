@@ -40,7 +40,7 @@ spec:
               name: sonarr-config
             - mountPath: /nfs/media/familytv
               name: nfs-familytv
-            - mountPath: /media/nate/BlueIris/media_downloads
+            - mountPath: /nfs/downloads
               name: nfs-downloads
       dnsConfig:
         nameservers:
@@ -49,11 +49,11 @@ spec:
         - name: nfs-familytv
           nfs:
             server: 192.168.1.60
-            path: /media/nate/MediaFiles/media/familytv
+            path: /media/nate/Media12TB/media/familytv
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
-            path: /media/nate/MediaFiles/downloads
+            path: /media/nate/BlueIris/media_downloads
         - name: sonarr-config
           persistentVolumeClaim:
             claimName: sonar-config-pvc
