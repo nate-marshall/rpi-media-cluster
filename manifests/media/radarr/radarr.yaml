@@ -29,7 +29,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - cat /media/nate/BlueIris/media_downloads/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt && cat /nfs/media/familymovies/healthy.txt && cat /nfs/media/christmas/healthy.txt
+                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt && cat /nfs/media/familymovies/healthy.txt
           ports:
             - containerPort: 7878
           volumeMounts:
