@@ -7,7 +7,7 @@ metadata:
   labels:
     app: sonarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: sonarr
@@ -38,6 +38,8 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: sonarr-config
+            - mountPath: /nfs/media/series
+              name: nfs-series
             - mountPath: /nfs/media/familytv
               name: nfs-familytv
             - mountPath: /nfs/downloads
@@ -46,10 +48,14 @@ spec:
         nameservers:
           - 1.1.1.1
       volumes:
+        - name: nfs-series
+          nfs:
+            server: 192.168.1.60
+            path:  /media/14TB_00/media/media/series
         - name: nfs-familytv
           nfs:
             server: 192.168.1.60
-            path: /media/nate/Media12TB/media/familytv
+            path:  /media/14TB_00/media/media/familytv
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60

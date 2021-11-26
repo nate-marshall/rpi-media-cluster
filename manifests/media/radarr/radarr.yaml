@@ -7,7 +7,7 @@ metadata:
   labels:
     app: radarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: radarr
@@ -29,7 +29,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt && cat /nfs/media/familymovies/healthy.txt
+                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
           ports:
             - containerPort: 7878
           volumeMounts:
@@ -37,8 +37,8 @@ spec:
               name: radarr-config
             - mountPath: /nfs/media/movies
               name: nfs-movies
-            - mountPath: /nfs/media/familymovies
-              name: nfs-familymovies
+            # - mountPath: /nfs/media/familymovies
+            #   name: nfs-familymovies
             - mountPath: /nfs/media/christmas
               name: nfs-christmas
             - mountPath: /nfs/downloads
@@ -51,10 +51,10 @@ spec:
           nfs:
             server: 192.168.1.60
             path: /media/nate/Media12TB/media/movies
-        - name: nfs-familymovies
-          nfs:
-            server: 192.168.1.60
-            path: /media/nate/Media12TB/media/familymovies
+        # - name: nfs-familymovies
+        #   nfs:
+        #     server: 192.168.1.60
+        #     path: /media/nate/Media12TB/media/familymovies
         - name: nfs-christmas
           nfs:
             server: 192.168.1.60
