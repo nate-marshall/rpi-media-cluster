@@ -37,8 +37,8 @@ spec:
               name: radarr-config
             - mountPath: /nfs/media/movies
               name: nfs-movies
-            # - mountPath: /nfs/media/familymovies
-            #   name: nfs-familymovies
+            - mountPath: /nfs/media/familymovies
+              name: nfs-familymovies
             - mountPath: /nfs/media/christmas
               name: nfs-christmas
             - mountPath: /nfs/downloads
@@ -51,10 +51,10 @@ spec:
           nfs:
             server: 192.168.1.60
             path: /media/nate/Media12TB/media/movies
-        # - name: nfs-familymovies
-        #   nfs:
-        #     server: 192.168.1.60
-        #     path: /media/nate/Media12TB/media/familymovies
+        - name: nfs-familymovies
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/familymovies
         - name: nfs-christmas
           nfs:
             server: 192.168.1.60
