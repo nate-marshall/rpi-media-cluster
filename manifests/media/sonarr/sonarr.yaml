@@ -30,8 +30,11 @@ spec:
           imagePullPolicy: Always
           image: linuxserver/sonarr
           resources:
-            limits:
+            requests:
               cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
               memory: 750Mi
           ports:
             - containerPort: 8989

@@ -20,8 +20,11 @@ spec:
         - name: radarr
           imagePullPolicy: Always
           resources:
-            limits:
+            requests:
               cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
               memory: 750Mi
           image: linuxserver/radarr
           livenessProbe:
