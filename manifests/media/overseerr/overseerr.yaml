@@ -33,21 +33,21 @@ spec:
           ports:
             - containerPort: 5055
           volumeMounts:
-            - mountPath: /app
+            - mountPath: /app/config
               name: overseerr-config
             - mountPath: /mediafiles/12TB
-              name: media12TB-volume
+              name: media12tb-volume
             - mountPath: /mediafiles/14TB
-              name: media14TB-volume
+              name: media14tb-volume
       dnsConfig:
         nameservers:
           - 1.1.1.1
       volumes:
-        - name: media14TB-volume
+        - name: media14tb-volume
           nfs:
             server: 192.168.1.60
             path: /media/14TB_00
-        - name: media12TB-volume
+        - name: media12tb-volume
           nfs:
             server: 192.168.1.60
             path: /media/nate/Media12TB
