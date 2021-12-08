@@ -28,7 +28,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 30
           securityContext:
-            runAsGroup: 911
+            runAsGroup: 1002
           imagePullPolicy: Always
           image: linuxserver/sonarr
           resources:

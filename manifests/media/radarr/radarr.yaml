@@ -19,7 +19,7 @@ spec:
       containers:
         - name: radarr
           securityContext:
-            runAsGroup: 911
+            runAsGroup: 1002
           imagePullPolicy: Always
           resources:
             requests:
