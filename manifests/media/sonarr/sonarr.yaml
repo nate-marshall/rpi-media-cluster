@@ -27,6 +27,9 @@ spec:
                 - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
             initialDelaySeconds: 5
             periodSeconds: 30
+          securityContext:
+            runAsUser:  911
+            runAsGroup: 911
           imagePullPolicy: Always
           image: linuxserver/sonarr
           resources:
