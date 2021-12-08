@@ -30,8 +30,8 @@ spec:
           env:
             # - name: PUID
             #   value: "1000"
-            - name: PGID
-              value: "1002"
+            # - name: PGID
+            #   value: "1002"
             - name: TZ
               value: "America/Chicago"
           imagePullPolicy: Always
