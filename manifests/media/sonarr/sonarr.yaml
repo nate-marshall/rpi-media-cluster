@@ -27,8 +27,11 @@ spec:
                 - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
             initialDelaySeconds: 5
             periodSeconds: 30
-          securityContext:
-            runAsGroup: 1002
+          env:
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
           imagePullPolicy: Always
           image: linuxserver/sonarr
           resources:
