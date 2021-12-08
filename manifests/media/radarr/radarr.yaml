@@ -20,10 +20,10 @@ spec:
         - name: radarr
           imagePullPolicy: Always
           env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1002"
+            # - name: PUID
+            #   value: "1000"
+            # - name: PGID
+            #   value: "1002"
             - name: TZ
               value: "America/Chicago"
           resources:
