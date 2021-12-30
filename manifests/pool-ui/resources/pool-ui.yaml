@@ -37,6 +37,7 @@ spec:
       containers:
       - image: msmi/nodejs-poolcontroller-dashpanel
         name: pool-ui
+        command: ["tail", "-f", "/dev/null"]
         ports:
         - containerPort: 5051
         resources:
