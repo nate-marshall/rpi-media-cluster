@@ -30,7 +30,7 @@ spec:
   source:
     repoURL: https://github.com/nate-marshall/rpi-pool-cluster.git
     targetRevision: master
-    path: manifests/pool-controller-ui
+    path: manifests/pool-ui
   destination:
     server: https://kubernetes.default.svc
     namespace: pool
