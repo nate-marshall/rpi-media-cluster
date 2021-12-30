@@ -39,7 +39,7 @@ spec:
         name: pool-ui
         # command: ["tail", "-f", "/dev/null"]
         ports:
-        - containerPort: 5051
+        - containerPort: 5150
         resources:
           requests:
             cpu: "500m"
@@ -69,6 +69,6 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: 5051
+    targetPort: 5150
   selector:
     app: pool-ui
