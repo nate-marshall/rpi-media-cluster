@@ -28,7 +28,7 @@ metadata:
 spec:
   project: pool-project
   source:
-    repoURL: https://github.com/nate-marshall/rpi-pool-cluster.git
+    repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
     targetRevision: master
     path: manifests/pool-ui
   destination:
