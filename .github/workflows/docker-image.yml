@@ -20,6 +20,7 @@ jobs:
        wget https://github.com/rstrouse/nodejs-poolController-dashPanel/archive/refs/heads/master.zip
        unzip master
        cd nodejs-poolController-dashPanel-master
-       docker login -u n8marshall -p ${{ build.DOCKERHUB_PASS }}
+       env|sort
+       docker login -u n8marshall -p ${{ secrets.DOCKERHUB_PASS }}
        docker build . --file Dockerfile --tag n8marshall/nodejs-poolcontroller-dashpanel:${VERSION}
        docker push n8marshall/nodejs-poolcontroller-dashpanel:${VERSION}
