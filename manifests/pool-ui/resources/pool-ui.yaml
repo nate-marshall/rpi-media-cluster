@@ -47,15 +47,17 @@ spec:
           limits:
             cpu: "1000m"
             memory: "1000Mi"  
-        # volumeMounts:
-        # - mountPath: /app
-        #   name: pool-ui-config
+        volumeMounts:
+        - mountPath: /app/config.json
+          name: pool-ui-configjson
+          subPath: config.json
       hostname: pool-ui
       restartPolicy: Always
-      # volumes:
-      # - name: pool-ui-config
-      #   persistentVolumeClaim:
-      #     claimName: pool-ui-config-pvc
+      volumes:
+      - name: pool-ui-configjson
+        configMap:
+          name: pool-ui-configjson
+        
 ---
 apiVersion: v1
 kind: Service
