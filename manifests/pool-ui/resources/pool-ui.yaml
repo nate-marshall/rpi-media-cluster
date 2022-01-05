@@ -35,7 +35,7 @@ spec:
         nameservers:
           - 1.1.1.1
       containers:
-      - image: msmi/nodejs-poolcontroller-dashpanel
+      - image: n8marshall/nodejs-poolcontroller-dashpanel:1641349758
         name: pool-ui
         # command: ["tail", "-f", "/dev/null"]
         ports:
