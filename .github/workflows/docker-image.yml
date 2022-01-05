@@ -17,7 +17,9 @@ jobs:
     - name: Build the Pool UI Docker image
       run: |
        VERSION=$(date +%s)
-       git checkout https://github.com/rstrouse/nodejs-poolController-dashPanel
+       wget https://github.com/rstrouse/nodejs-poolController-dashPanel/archive/refs/heads/master.zip
+       unzip master
+       ls -la
        docker login -u n8marshall -p ${{ secrets.DOCKERHUB_PASS }}
        docker build . --file nodejs-poolController-dashPanel/Dockerfile --tag n8marshall/nodejs-poolcontroller-dashpanel:${VERSION}
        docker push n8marshall/nodejs-poolcontroller-dashpanel:${VERSION}
