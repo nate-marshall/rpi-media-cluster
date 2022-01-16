@@ -58,19 +58,19 @@ spec:
         configMap:
           name: plexmm-config
         
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: plexmm
-  namespace: media
-spec:
-  loadBalancerIP: 192.168.1.190
-  type: LoadBalancer
-  externalTrafficPolicy: Local
-  ports:
-  - name: http
-    port: 80
-    targetPort: 5150
-  selector:
-    app: plexmm
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: plexmm
+#   namespace: media
+# spec:
+#   loadBalancerIP: 192.168.1.190
+#   type: LoadBalancer
+#   externalTrafficPolicy: Local
+#   ports:
+#   - name: http
+#     port: 80
+#     targetPort: 5150
+#   selector:
+#     app: plexmm
