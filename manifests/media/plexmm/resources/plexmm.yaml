@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plexmm-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: media-ubuntu
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1000Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: plexmm
+  name: plexmm
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plexmm
+  template:
+    metadata:
+      labels:
+        app: plexmm
+    spec:
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      containers:
+      - image: meisnate12/plex-meta-manager
+        name: plexmm
+        # command: ["tail", "-f", "/dev/null"]
+        ports:
+        - containerPort: 5150
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "50Mi"      
+          limits:
+            cpu: "1000m"
+            memory: "1000Mi"  
+        volumeMounts:
+        - mountPath: /config/config.yml
+          name: plexmm-config
+          subPath: config.yml
+      hostname: plexmm
+      restartPolicy: Always
+      volumes:
+      - name: plexmm-config
+        configMap:
+          name: plexmm-config
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plexmm
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.190
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5150
+  selector:
+    app: plexmm
