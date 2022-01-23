@@ -39,7 +39,7 @@ spec:
             - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
               value: "90"
             - name: AUTOMATED_CONVERSION_OUTPUT_DIR
-              value: "/nfs/downloads/tmp"
+              value: "/nfs/downloads/tmp/movies"
             - name: AUTOMATED_CONVERSION_OUTPUT_SUBDIR
               value: "SAME_AS_SRC"
           resources:
