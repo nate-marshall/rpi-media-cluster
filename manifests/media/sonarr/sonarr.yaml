@@ -35,7 +35,7 @@ spec:
             - name: TZ
               value: "America/Chicago"
           imagePullPolicy: Always
-          image: linuxserver/sonarr
+          image: lscr.io/linuxserver/sonarr
           resources:
             requests:
               cpu: 500m
