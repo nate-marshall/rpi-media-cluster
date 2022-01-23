@@ -48,7 +48,7 @@ spec:
               memory: 1024Mi
             limits:
               cpu: 3000m
-              memory: 1000Mi
+              memory: 2048Mi
           image: jlesage/handbrake
           livenessProbe:
             exec:
