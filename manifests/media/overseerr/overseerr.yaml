@@ -33,7 +33,7 @@ spec:
           ports:
             - containerPort: 5055
           volumeMounts:
-            - mountPath: /app/config
+            - mountPath: /config
               name: overseerr-config
             - mountPath: /mediafiles/12TB
               name: media12tb-volume
