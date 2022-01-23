@@ -20,7 +20,7 @@ spec:
         - name: overseerr
 #          command: ["tail", "-f", "/dev/null"]
           imagePullPolicy: Always
-          image: sctx/overseerr:latest
+          image: lscr.io/linuxserver/overseerr
           resources:
             limits:
               cpu: 500m
