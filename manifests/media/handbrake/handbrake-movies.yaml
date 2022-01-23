@@ -1,0 +1,120 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handbrake-movies-deployment
+  namespace: media
+  labels:
+    app: handbrake-movies
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handbrake-movies
+  template:
+    metadata:
+      labels:
+        app: handbrake-movies
+    spec:
+      containers:
+        - name: handbrake-movies
+          imagePullPolicy: Always
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+            - name: KEEP_APP_RUNNING
+              value: "1"
+            - name: CLEAN_TMP_DIR
+              value: "1"
+            - name: AUTOMATED_CONVERSION_PRESET
+              value: "Custom/1080p30Stereo"
+            - name: AUTOMATED_CONVERSION_KEEP_SOURCE
+              value: "1"
+            - name: AUTOMATED_CONVERSION_FORMAT
+              value: "mp4"
+            - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
+              value: "90"
+            - name: AUTOMATED_CONVERSION_OUTPUT_DIR
+              value: "/nfs/downloads/tmp"
+            - name: AUTOMATED_CONVERSION_OUTPUT_SUBDIR
+              value: "SAME_AS_SRC"
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1024Mi
+            limits:
+              cpu: 3000m
+              memory: 1000Mi
+          image: jlesage/handbrake
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
+          ports:
+            - containerPort: 5800
+          volumeMounts:
+            - mountPath: /config
+              name: handbrake-movies-config
+            - mountPath: /nfs/media/movies
+              name: nfs-movies
+            - mountPath: /nfs/media/christmas
+              name: nfs-christmas
+            - mountPath: /nfs/downloads
+              name: nfs-downloads
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+        - name: nfs-movies
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/movies
+        - name: nfs-christmas
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/christmas
+        - name: nfs-downloads
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media_downloads
+        - name: handbrake-movies-config
+          persistentVolumeClaim:
+            claimName: handbrake-movies-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: handbrake-movies-service
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.191
+  ports:
+    - protocol: TCP
+      name: "5800"
+      port: 5800
+  selector:
+    app: handbrake-movies
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: handbrake-movies-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: media-ubuntu
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
