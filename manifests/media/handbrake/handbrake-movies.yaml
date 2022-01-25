@@ -31,7 +31,7 @@ spec:
             - name: CLEAN_TMP_DIR
               value: "1"
             - name: AUTOMATED_CONVERSION_PRESET
-              value: "Custom/1080p30Stereo"
+              value: "General/Very Fast 1080p30"
             - name: AUTOMATED_CONVERSION_KEEP_SOURCE
               value: "1"
             - name: AUTOMATED_CONVERSION_FORMAT
