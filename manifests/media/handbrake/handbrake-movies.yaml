@@ -50,12 +50,12 @@ spec:
               cpu: 3000m
               memory: 2048Mi
           image: jlesage/handbrake
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - /bin/sh
+          #       - -c
+          #       - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
           ports:
             - containerPort: 5800
           volumeMounts:
