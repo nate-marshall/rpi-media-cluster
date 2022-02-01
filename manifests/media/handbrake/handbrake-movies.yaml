@@ -35,7 +35,7 @@ spec:
             - name: AUTOMATED_CONVERSION_PRESET
               value: "General/Very Fast 1080p30"
             - name: AUTOMATED_CONVERSION_KEEP_SOURCE
-              value: "1"
+              value: "0"
             - name: AUTOMATED_CONVERSION_FORMAT
               value: "mp4"
             - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
