@@ -20,10 +20,12 @@ spec:
         - name: handbrake-movies
           imagePullPolicy: Always
           env:
-            - name: PUID
+            - name: USER_ID
               value: "1000"
-            - name: PGID
+            - name: GROUP_ID
               value: "1002"
+            - name: UMASK
+              value: "003"
             - name: TZ
               value: "America/Chicago"
             - name: KEEP_APP_RUNNING
