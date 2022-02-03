@@ -86,11 +86,11 @@ spec:
         - name: watch
           nfs:
             server: 192.168.1.60
-            path: /media/nate/Media12TB/media/christmas
+            path: /media/nate/Media12TB/media/movies
         - name: output
           nfs:
             server: 192.168.1.60
-            path: /media/nate/Media12TB/media/christmas
+            path: /media/nate/Media12TB/media/movies
         - name: handbrake-movies-config
           persistentVolumeClaim:
             claimName: handbrake-movies-config-pvc
