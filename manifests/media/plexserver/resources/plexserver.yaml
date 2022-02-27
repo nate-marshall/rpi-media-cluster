@@ -89,7 +89,7 @@ spec:
         persistentVolumeClaim:
           claimName: plexserver-pvc-data
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/arch: arm64
       dnsConfig:
         nameservers:
           - 1.1.1.1
@@ -217,7 +217,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plexserver-ing
+  name: plexserver
   annotations:
     kubernetes.io/ingress.class: "nginx"
     # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -225,14 +225,13 @@ metadata:
     nginx.ingress.kubernetes.io/app-root: /web
 spec:
   rules:
-  - host: plexserver.mymarshall5.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: plex-tcp
-          servicePort: pms-web
-  # tls:
-  # - hosts:
-  #   - plexserver.mymarshall5.com
-  #   secretName: plexserver.mymarshall5.com-tls
+    - host: plex.mymarshall5.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: plex-tcp
+                port:
+                  name: pms-web
