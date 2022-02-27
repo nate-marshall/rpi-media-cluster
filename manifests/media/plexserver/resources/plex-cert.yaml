@@ -1,18 +1,18 @@
----
+--- 
 apiVersion: cert-manager.io/v1
 kind: Certificate
-metadata:
+metadata: 
   name: plex-cert
-spec:
-  secretName: plex-mymarshall5-com
-  issuerRef:
-    name: letsencrypt-prod
+spec: 
+  acme: 
+    config: 
+      - dns01: 
+          provider: cloudflare
+        domains: 
+          - plex.mymarshall5.com
+  dnsNames: 
+    - plex.mymarshall5.com
+  issuerRef: 
     kind: ClusterIssuer
-  dnsNames:
-    - "plex.mymarshall5.com"
-  acme:
-    config:
-    - dns01:
-        provider: cloudflare
-      domains:
-      - "plex.mymarshall5.com"
+    name: letsencrypt-prod
+  secretName: plex-mymarshall5-com
