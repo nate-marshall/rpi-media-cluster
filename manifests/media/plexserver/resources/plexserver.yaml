@@ -217,7 +217,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plexserver
+  name: plexserver-ing
   annotations:
     kubernetes.io/ingress.class: "nginx"
     # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
