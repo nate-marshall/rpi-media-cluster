@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: plex-cert
+spec:
+  secretName: plex-mymarshall5-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: 'plex.mymarshall5.com'
+  dnsNames:
+    - "plex.mymarshall5.com"
