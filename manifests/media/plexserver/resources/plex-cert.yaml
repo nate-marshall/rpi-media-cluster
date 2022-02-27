@@ -10,3 +10,9 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - "plex.mymarshall5.com"
+  acme:
+    config:
+    - dns01:
+        provider: cloudflare
+      domains:
+      - "plex.mymarshall5.com"
