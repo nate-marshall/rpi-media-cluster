@@ -26,4 +26,4 @@ spec:
   tls:
   - hosts:
     - plex.mymarshall5.com
-    secretName: mymarshall5-com
+    secretName: plex-mymarshall5-com
