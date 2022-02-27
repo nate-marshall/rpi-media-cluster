@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    kubernetes.io/tls-acme: 'true'
+    # kubernetes.io/tls-acme: 'true'
 #    nginx.ingress.kubernetes.io/configuration-snippet: |
 #      proxy_set_header l5d-dst-override argocd-server.argocd.svc.cluster.local:80;
 #      proxy_hide_header l5d-remote-ip;
