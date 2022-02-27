@@ -19,4 +19,4 @@ spec:
         selector:
           dnsNames:
             - "mymarshall5.com"
-            - "*.mymarshall5.com"
+            # - "*.mymarshall5.com"
