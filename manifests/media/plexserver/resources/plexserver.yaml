@@ -88,6 +88,11 @@ spec:
       - name: nfs-data
         persistentVolumeClaim:
           claimName: plexserver-pvc-data
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       containers:
       - env:
         - name: PLEX_CLAIM
