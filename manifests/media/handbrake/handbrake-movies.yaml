@@ -8,6 +8,7 @@ metadata:
     app: handbrake-movies
 spec:
   replicas: 1
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: handbrake-movies
