@@ -21,7 +21,7 @@ spec:
   tls:
     - hosts:
         - argocd.mymarshall5.com
-      secretName: mymarshall5-com
+      secretName: argocd-mymarshall5-com
   rules:
     - host: argocd.mymarshall5.com
       http:

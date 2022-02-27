@@ -28,8 +28,11 @@ metadata:
 spec:
   project: cert-manager-project
   source:
-    path: cert-manager
-    repoURL: https://github.com/argoproj/argoproj-deployments
+    # path: cert-manager
+    # repoURL: https://github.com/argoproj/argoproj-deployments
+      repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
+      targetRevision: master
+      path: manifests/cert-manager
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
