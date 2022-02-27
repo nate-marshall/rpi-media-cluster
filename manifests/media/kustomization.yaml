@@ -6,6 +6,7 @@ resources:
   - heimdall
   - overseerr
   - plexmm
+  - plexserver
   - radarr
   - sonarr
   - tautulli

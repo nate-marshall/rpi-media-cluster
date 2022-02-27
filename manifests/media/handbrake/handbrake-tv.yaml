@@ -40,8 +40,8 @@ spec:
               value: "mp4"
             - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
               value: "30"
-            - name: AUTOMATED_CONVERSION_OUTPUT_DIR
-              value: "/nfs/downloads/tmp/tv"
+            # - name: AUTOMATED_CONVERSION_OUTPUT_DIR
+            #   value: "/nfs/downloads/tmp/tv"
             - name: AUTOMATED_CONVERSION_OUTPUT_SUBDIR
               value: "SAME_AS_SRC"
             - name: AUTOMATED_CONVERSION_OVERWRITE_OUTPUT
@@ -73,6 +73,14 @@ spec:
         nameservers:
           - 1.1.1.1
       volumes:
+        - name: watch
+          nfs:
+            server: 192.168.1.60
+            path: /media/14TB_00/media/tv
+        - name: output
+          nfs:
+            server: 192.168.1.60
+            path: /media/14TB_00/media/tv
         - name: nfs-tv
           nfs:
             server: 192.168.1.60
