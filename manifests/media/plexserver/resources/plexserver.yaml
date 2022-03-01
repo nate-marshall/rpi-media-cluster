@@ -81,6 +81,30 @@ spec:
         app: plexserver
     spec:
       volumes:
+      - name: nfs-movies
+        nfs:
+          server: 192.168.1.60
+          path: /media/nate/Media12TB/media/movies
+      - name: nfs-christmas
+        nfs:
+          server: 192.168.1.60
+          path: /media/nate/Media12TB/media/christmas
+      - name: nfs-tv
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/tv
+      - name: nfs-audiobooks
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/audiobooks
+      - name: nfs-fitness
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/fitness
+      - name: nfs-music
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/music
       - name: nfs-plex-config
         persistentVolumeClaim:
           claimName: plexserver-pvc-config
@@ -142,10 +166,22 @@ spec:
         stdin: true
         tty: true
         volumeMounts:
-        - mountPath: /config
-          name: nfs-plex-config
-        - mountPath: /data
-          name: nfs-data 
+        - name: nfs-christmas
+          mountPath: /media/nate/Media12TB/media/christmas
+        - name: nfs-movies
+          mountPath: /media/nate/Media12TB/media/movies
+        - name: nfs-tv
+          mountPath: /media/14TB_00/media/tv
+        - name: nfs-audiobooks
+          mountPath: /media/14TB_00/media/audiobooks
+        - name: nfs-fitness
+          mountPath: /media/14TB_00/media/fitness
+        - name: nfs-music
+          mountPath: /media/14TB_00/media/music
+        - name: nfs-plex-config
+          mountPath: /config
+        - name: nfs-data 
+          mountPath: /data
       restartPolicy: Always
 ---
 kind: Service
