@@ -34,7 +34,7 @@ spec:
             - name: CLEAN_TMP_DIR
               value: "1"
             - name: AUTOMATED_CONVERSION_PRESET
-              value: "General/Very Fast 1080p30"
+              value: "General/Very Fast 720p30"
             - name: AUTOMATED_CONVERSION_KEEP_SOURCE
               value: "0"
             - name: AUTOMATED_CONVERSION_FORMAT
@@ -70,6 +70,10 @@ spec:
               name: nfs-tv
             - mountPath: /nfs/downloads
               name: nfs-downloads
+            - mountPath: /watch
+              name: watch
+            - mountPath: /output
+              name: output
       dnsConfig:
         nameservers:
           - 1.1.1.1
