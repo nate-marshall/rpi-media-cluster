@@ -29,8 +29,8 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 30
           env:
-            # - name: PUID
-            #   value: "998"
+            - name: PUID
+              value: "998"
             - name: PGID
               value: "1002"
             - name: TZ

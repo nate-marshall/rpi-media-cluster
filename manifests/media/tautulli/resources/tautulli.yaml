@@ -22,9 +22,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name: PUID
-              value: "1000"
+              value: "998"
             - name: PGID
-              value: "1000"
+              value: "1002"
             - name: TZ
               value: "America/Chicago"
           resources:
