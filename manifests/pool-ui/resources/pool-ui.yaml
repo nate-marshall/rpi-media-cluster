@@ -35,8 +35,17 @@ spec:
       dnsConfig:
         nameservers:
           - 1.1.1.1
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - media-ubuntu
       containers:
-      - image: n8marshall/nodejs-poolcontroller-dashpanel:1641349758
+      - image: n8marshall/nodejs-poolcontroller-dashpanel:1646950354
         name: pool-ui
         # command: ["tail", "-f", "/dev/null"]
         ports:
