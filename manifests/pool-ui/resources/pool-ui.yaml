@@ -67,7 +67,6 @@ spec:
       - name: pool-ui-configjson
         configMap:
           name: pool-ui-configjson
-        
 ---
 apiVersion: v1
 kind: Service
