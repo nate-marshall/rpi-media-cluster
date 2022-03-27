@@ -45,7 +45,7 @@ spec:
                     values:
                       - media-ubuntu
       containers:
-      - image: n8marshall/nodejs-poolcontroller-dashpanel:1647738330
+      - image: n8marshall/nodejs-poolcontroller-dashpanel:1648400108
         name: pool-ui
         # command: ["tail", "-f", "/dev/null"]
         ports:
