@@ -38,7 +38,7 @@ data:
         },
         "services": {
           "protocol": "http://",
-          "ip": "192.168.1.24",
+          "ip": "192.168.1.35",
           "port": 4200,
           "useProxy": false,
           "options": {},
@@ -70,6 +70,6 @@ data:
         }
       },
       "appVersion": {
-        "installed": "7.5.1"
+        "installed": "7.6.1"
       }
     }
