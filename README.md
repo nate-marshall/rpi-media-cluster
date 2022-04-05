@@ -24,4 +24,3 @@ A bunch of yamls to run my media server apps on a Lightweight Kubernetes cluster
 ### Notes
 - NFS server config: Not noted in this repo. [There are many ways that you can build out a NFS server on your network](https://lmgtfy.com/?q=How+do+I+build+a+nfs+server).
 - Plex: Starts up and runs fine, but the RPi hardware didn't keep up with any media that needed to be transcoded. 
-
