@@ -1,3 +1,4 @@
+# https://randombytes.substack.com/p/home-assistant-on-kubernetes-more?s=r
 ---
 apiVersion: apps/v1
 kind: Deployment
