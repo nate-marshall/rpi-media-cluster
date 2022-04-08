@@ -1,0 +1,90 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: homeassistant
+  name: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      nodeName: media-ubuntu
+      volumes:
+        - name: ha-storage
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/homeassistant
+        - name: ha-mysql-storage
+          hostPath:
+            path: /opt/ha-mysql
+            type: DirectoryOrCreate
+      containers:
+        - image: ghcr.io/home-assistant/home-assistant:stable
+          resources:
+            requests:
+              cpu: 750m
+              memory: 512Mi
+            limits:
+              cpu: 1500m
+              memory: 2048Mi
+          name: home-assistant
+          volumeMounts:
+            - mountPath: "/config"
+              name: ha-storage
+        - image: mysql:latest
+          resources:
+            requests:
+              cpu: 750m
+              memory: 512Mi
+            limits:
+              cpu: 1500m
+              memory: 2048Mi
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-recorder-pass
+                  key: password
+          volumeMounts:
+            - name: ha-mysql-storage
+              mountPath: /var/lib/mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant
+spec:
+  selector:
+    app: homeassistant
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.1.196
+  ports:
+    - protocol: TCP
+      port: 8123
+      name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant-ingress
+spec:
+  rules:
+    - host: homeassistant.mymarshall5.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: homeassistant
+                port:
+                  number: 8123

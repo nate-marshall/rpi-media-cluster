@@ -4,6 +4,7 @@ resources:
   - amcrest-mqtt
   - handbrake
   - heimdall
+  - homeassistant
   - overseerr
   - plexmm
   - plexserver
