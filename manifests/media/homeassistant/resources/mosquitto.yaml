@@ -50,6 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: mosquitto
     spec:
+      nodeName: media-ubuntu
       containers:
         - name: mosquitto
           image: "eclipse-mosquitto:2.0.12"
