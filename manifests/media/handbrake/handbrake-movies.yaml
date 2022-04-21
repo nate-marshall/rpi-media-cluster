@@ -25,7 +25,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - ubuntu-server-01
+                      - media-ubuntu
       containers:
         - name: handbrake-movies
           imagePullPolicy: Always
@@ -128,7 +128,7 @@ metadata:
   namespace: media
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: ubuntu-server-01
+    volume.kubernetes.io/selected-node: media-ubuntu
 spec:
   accessModes:
     - ReadWriteOnce
