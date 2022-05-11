@@ -53,8 +53,9 @@ spec:
             server: 192.168.1.60
             path: /media/nate/Media12TB
         - name: overseerr-config
-          persistentVolumeClaim:
-            claimName: overseerr-config-pvc
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/overseer/config
 ---
 apiVersion: v1
 kind: Service
@@ -71,19 +72,3 @@ spec:
     app: overseerr
   type: LoadBalancer
   externalTrafficPolicy: Local
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: overseerr-config-pvc
-  namespace: media
-  annotations:
-    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: raspberrypi-3
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 5Gi
