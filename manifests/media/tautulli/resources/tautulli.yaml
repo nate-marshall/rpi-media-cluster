@@ -51,8 +51,9 @@ spec:
           - 1.1.1.1
       volumes:
         - name: tautulli-config
-          persistentVolumeClaim:
-            claimName: tautulli-config-pvc
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/tautulli/config
 ---
 apiVersion: v1
 kind: Service
@@ -69,19 +70,3 @@ spec:
     app: tautulli
   type: LoadBalancer
   externalTrafficPolicy: Local
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tautulli-config-pvc
-  namespace: media
-  annotations:
-    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: raspberrypi-3
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 1Gi
