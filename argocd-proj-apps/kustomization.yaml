@@ -10,3 +10,4 @@ resources:
   - metallb.yaml
   - pool.yaml
   - prometheus.yaml
+  - signoz.yaml
