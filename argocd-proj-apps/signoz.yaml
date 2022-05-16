@@ -30,7 +30,7 @@ spec:
   source:
     chart: signoz
     repoURL: https://charts.signoz.io
-    # targetRevision: 0.8.0
+    targetRevision: 0.7.1
     helm:
       releaseName: signoz
   destination:
