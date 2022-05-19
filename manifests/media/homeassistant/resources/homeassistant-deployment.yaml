@@ -16,7 +16,7 @@ spec:
       labels:
         app: homeassistant
     spec:
-      nodeName: media-ubuntu
+      nodeName: nuc01
       volumes:
         - name: ha-storage
           nfs:

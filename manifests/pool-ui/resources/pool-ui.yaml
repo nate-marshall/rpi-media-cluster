@@ -5,7 +5,7 @@ metadata:
   namespace: pool
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: media-ubuntu
+    volume.kubernetes.io/selected-node: nuc01
 spec:
   accessModes:
     - ReadWriteOnce
@@ -43,7 +43,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - media-ubuntu
+                      - nuc01
       containers:
       - image: n8marshall/nodejs-poolcontroller-dashpanel:1649179228
         name: pool-ui
