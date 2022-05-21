@@ -16,7 +16,7 @@ spec:
       labels:
         app: homeassistant
     spec:
-      nodeName: nuc01
+      nodeName: nuc02
       volumes:
         - name: ha-storage
           nfs:
