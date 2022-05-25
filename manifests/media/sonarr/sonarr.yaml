@@ -39,8 +39,8 @@ spec:
           image: lscr.io/linuxserver/sonarr
           resources:
             requests:
-              cpu: 500m
-              memory: 256Mi
+              cpu: 1000m
+              memory: 512Mi
             limits:
               cpu: 3000m
               memory: 1000Mi

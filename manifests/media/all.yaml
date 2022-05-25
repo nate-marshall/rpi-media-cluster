@@ -82,7 +82,7 @@ kind: PersistentVolumeClaim
 metadata:
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: nuc01
+    volume.kubernetes.io/selected-node: nuc02
   name: overseerr-config-pvc
   namespace: media
 spec:
