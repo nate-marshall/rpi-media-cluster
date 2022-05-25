@@ -66,9 +66,8 @@ spec:
             server: 192.168.1.60
             path: /media/nate/Media12TB/media_downloads
         - name: sonarr-config
-          nfs:
-            server: 192.168.1.60
-            path: /media/nate/Media12TB/services/sonarr/config
+          persistentVolumeClaim:
+            claimName: sonar-config-pvc
 ---
 apiVersion: v1
 kind: Service
