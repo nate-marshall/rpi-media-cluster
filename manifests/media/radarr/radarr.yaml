@@ -87,7 +87,6 @@ spec:
     app: radarr
   type: LoadBalancer
   externalTrafficPolicy: Local
-<<<<<<< HEAD
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -104,5 +103,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
-=======
->>>>>>> 23e2ddd75a463a7320d6574cb91dc38a8981c0d9
