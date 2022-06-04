@@ -81,11 +81,11 @@ spec:
         - name: watch
           nfs:
             server: 192.168.1.60
-            path: /media/14TB_00/media/tv
+            path: /media/14TB_00/media/tv/The_X-Files
         - name: output
           nfs:
             server: 192.168.1.60
-            path: /media/14TB_00/media/tv
+            path: /media/14TB_00/media/tv/The_X-Files
         - name: nfs-tv
           nfs:
             server: 192.168.1.60
