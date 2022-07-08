@@ -45,7 +45,7 @@ spec:
                     values:
                       - nuc02
       containers:
-      - image: n8marshall/nodejs-poolcontroller-dashpanel:1653860329
+      - image: n8marshall/nodejs-poolcontroller-dashpanel:1656110651
         name: pool-ui
         # command: ["tail", "-f", "/dev/null"]
         ports:
