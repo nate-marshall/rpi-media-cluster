@@ -51,6 +51,8 @@ spec:
               name: sonarr-config
             - mountPath: /nfs/media/tv
               name: nfs-tv
+            - mountPath: /nfs/media/ended
+              name: nfs-tv-ended
             - mountPath: /nfs/downloads
               name: nfs-downloads
       dnsConfig:
@@ -61,6 +63,10 @@ spec:
           nfs:
             server: 192.168.1.60
             path:  /media/14TB_00/media/tv
+        - name: nfs-tv-ended
+          nfs:
+            server: 192.168.1.60
+            path:  /media/8TB_00/media/tv_ended
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
