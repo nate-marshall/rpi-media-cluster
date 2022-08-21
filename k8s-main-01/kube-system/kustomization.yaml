@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - github.com/rancher/local-path-provisioner/deploy?ref=master
   - resources/cert-manager.yaml
+  - resources/descheduler
