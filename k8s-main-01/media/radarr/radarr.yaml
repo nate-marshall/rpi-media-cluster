@@ -1,0 +1,105 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr-deployment
+  namespace: media
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          imagePullPolicy: Always
+          env:
+            - name: PUID
+              value: "998"
+            - name: PGID
+              value: "1002"
+            - name: TZ
+              value: "America/Chicago"
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 1000Mi
+          image: lscr.io/linuxserver/radarr
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
+          ports:
+            - containerPort: 7878
+          volumeMounts:
+            - mountPath: /config
+              name: radarr-config
+            - mountPath: /nfs/media/movies
+              name: nfs-movies
+            - mountPath: /nfs/media/christmas
+              name: nfs-christmas
+            - mountPath: /nfs/downloads
+              name: nfs-downloads
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+        - name: nfs-movies
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/movies
+        - name: nfs-christmas
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media/christmas
+        - name: nfs-downloads
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media_downloads
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr-service
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.178
+  ports:
+    - protocol: TCP
+      name: "7878"
+      port: 7878
+  selector:
+    app: radarr
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config-pvc
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: nuc02
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overseerr-deployment
+  namespace: media
+  labels:
+    app: overseerr
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: overseerr
+  template:
+    metadata:
+      labels:
+        app: overseerr
+    spec:
+      containers:
+        - name: overseerr
+#          command: ["tail", "-f", "/dev/null"]
+          imagePullPolicy: Always
+          image: lscr.io/linuxserver/overseerr
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: TZ
+              value: "America/Chicago"
+          ports:
+            - containerPort: 5055
+          volumeMounts:
+            - mountPath: /config
+              name: overseerr-config
+            - mountPath: /mediafiles/12TB
+              name: media12tb-volume
+            - mountPath: /mediafiles/14TB
+              name: media14tb-volume
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+        - name: media14tb-volume
+          nfs:
+            server: 192.168.1.60
+            path: /media/14TB_00
+        - name: media12tb-volume
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB
+        - name: overseerr-config
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/overseer/config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: overseerr-service
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.185
+  ports:
+    - protocol: TCP
+      name: "5055"
+      port: 5055
+  selector:
+    app: overseerr
+  type: LoadBalancer
+  externalTrafficPolicy: Local

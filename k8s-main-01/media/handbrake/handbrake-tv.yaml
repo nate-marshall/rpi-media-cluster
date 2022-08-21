@@ -1,0 +1,132 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handbrake-tv-deployment
+  namespace: media
+  labels:
+    app: handbrake-tv
+spec:
+  replicas: 0
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: handbrake-tv
+  template:
+    metadata:
+      labels:
+        app: handbrake-tv
+    spec:
+      containers:
+        - name: handbrake-tv
+          imagePullPolicy: Always
+          env:
+            - name: USER_ID
+              value: "998"
+            - name: GROUP_ID
+              value: "1002"
+            - name: UMASK
+              value: "003"
+            - name: TZ
+              value: "America/Chicago"
+            - name: KEEP_APP_RUNNING
+              value: "1"
+            - name: CLEAN_TMP_DIR
+              value: "1"
+            - name: AUTOMATED_CONVERSION_PRESET
+              value: "Custom/Very Fast 720p30v2"
+            - name: AUTOMATED_CONVERSION_KEEP_SOURCE
+              value: "0"
+            - name: AUTOMATED_CONVERSION_FORMAT
+              value: "mp4"
+            - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
+              value: "30"
+            # - name: AUTOMATED_CONVERSION_OUTPUT_DIR
+            #   value: "/nfs/downloads/tmp/tv"
+            - name: AUTOMATED_CONVERSION_OUTPUT_SUBDIR
+              value: "SAME_AS_SRC"
+            - name: AUTOMATED_CONVERSION_OVERWRITE_OUTPUT
+              value: "1"
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2048Mi
+            limits:
+              cpu: 2000m
+              memory: 4096Mi
+          image: jlesage/handbrake
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
+          ports:
+            - containerPort: 5800
+          volumeMounts:
+            - mountPath: /config
+              name: handbrake-tv-config
+            - mountPath: /nfs/media/tv
+              name: nfs-tv
+            - mountPath: /nfs/downloads
+              name: nfs-downloads
+            - mountPath: /watch
+              name: watch
+            - mountPath: /output
+              name: output
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+        - name: watch
+          nfs:
+            server: 192.168.1.60
+            path: /media/14TB_00/media/tv/The_X-Files
+        - name: output
+          nfs:
+            server: 192.168.1.60
+            path: /media/14TB_00/media/tv/The_X-Files
+        - name: nfs-tv
+          nfs:
+            server: 192.168.1.60
+            path:  /media/14TB_00/media/tv
+        - name: nfs-downloads
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media_downloads
+        - name: handbrake-tv-config
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/handbrake-tv/config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: handbrake-tv-service
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.192
+  ports:
+    - protocol: TCP
+      name: "5800"
+      port: 5800
+  selector:
+    app: handbrake-tv
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: handbrake-tv-config-pvc
+#   namespace: media
+#   annotations:
+#     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+#     volume.kubernetes.io/selected-node: media-ubuntu
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: local-path
+#   resources:
+#     requests:
+#       storage: 1Gi
