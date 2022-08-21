@@ -3,11 +3,11 @@ kind: Kustomization
 resources:
   - amcrest-mqtt
   - handbrake
-  - heimdall
+#  - heimdall
   #- homeassistant
   - overseerr
   - plexmm
-  - plexserver
+#  - plexserver
   - radarr
   - sonarr
   - tautulli
