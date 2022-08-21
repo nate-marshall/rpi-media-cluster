@@ -1,0 +1,75 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: pool-ui-configjson
+  namespace: pool
+data:
+  config.json: |-
+    {
+      "web": {
+        "servers": {
+          "http2": {
+            "enabled": false
+          },
+          "http": {
+            "enabled": true,
+            "ip": "0.0.0.0",
+            "port": 5150,
+            "httpsRedirect": false,
+            "authentication": "none",
+            "authFile": "/users.htpasswd"
+          },
+          "https": {
+            "enabled": true,
+            "ip": "127.0.0.1",
+            "port": 5151,
+            "authentication": "none",
+            "authFile": "/users.htpasswd",
+            "sslKeyFile": "",
+            "sslCertFile": ""
+          },
+          "mdns": {
+            "enabled": false
+          },
+          "sspd": {
+            "enabled": false
+          },
+          "services": {}
+        },
+        "services": {
+          "protocol": "http://",
+          "ip": "192.168.1.35",
+          "port": 4200,
+          "useProxy": false,
+          "options": {},
+          "socket": {
+            "protocol": "ws://",
+            "upgrade": false,
+            "allowEIO3": true,
+            "reconnectionDelay": 2000,
+            "reconnection": true,
+            "reconnectionDelayMax": 20000
+          }
+        },
+        "socket": {
+          "sendLogMessages": false
+        }
+      },
+      "dashboard": {
+        "startPage": "index.html"
+      },
+      "log": {
+        "app": {
+          "enabled": true,
+          "level": "info"
+        }
+      },
+      "uploads": {
+        "logFile": {
+          "path": "uploads/"
+        }
+      },
+      "appVersion": {
+        "installed": "7.6.1"
+      }
+    }

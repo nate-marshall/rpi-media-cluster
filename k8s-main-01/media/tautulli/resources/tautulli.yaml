@@ -1,0 +1,72 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tautulli-deployment
+  namespace: media
+  labels:
+    app: tautulli
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: tautulli
+  template:
+    metadata:
+      labels:
+        app: tautulli
+    spec:
+      containers:
+        - name: tautulli
+          imagePullPolicy: Always
+          env:
+            - name: PUID
+              value: "998"
+            - name: PGID
+              value: "1002"
+            - name: TZ
+              value: "America/Chicago"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
+              cpu: 3000m
+              memory: 1000Mi
+          image: lscr.io/linuxserver/tautulli
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - /bin/sh
+          #       - -c
+          #       - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
+          ports:
+            - containerPort: 8181
+          volumeMounts:
+            - mountPath: /config
+              name: tautulli-config
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+        - name: tautulli-config
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/tautulli/config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tautulli-service
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.181
+  ports:
+    - protocol: TCP
+      name: "8181"
+      port: 8181
+  selector:
+    app: tautulli
+  type: LoadBalancer
+  externalTrafficPolicy: Local

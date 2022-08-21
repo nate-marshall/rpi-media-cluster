@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amcrest-mqtt-deployment
+  namespace: media
+  labels:
+    app: amcrest-mqtt
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: amcrest-mqtt
+  template:
+    metadata:
+      labels:
+        app: amcrest-mqtt
+    spec:
+      containers:
+        - name: amcrest-mqtt
+          imagePullPolicy: Always
+          env:
+            - name: AMCREST_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: amcrest_host
+                  name: amcrest-mqtt
+            - name: AMCREST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: amcrest_passwd
+                  name: amcrest-mqtt
+            - name: MQTT_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: mqtt_host
+                  name: amcrest-mqtt
+            - name: MQTT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: mqtt_user
+                  name: amcrest-mqtt
+            - name: MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mqtt_passwd
+                  name: amcrest-mqtt
+            - name: HOME_ASSISTANT
+              value: "true"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          image: dchesterton/amcrest2mqtt:latest
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1

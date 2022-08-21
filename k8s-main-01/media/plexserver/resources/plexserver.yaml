@@ -1,0 +1,250 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plexserver-pv-nfs-config
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /media/nate/Media12TB/services/plexk8s
+    server: 192.168.1.60
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plexserver-pv-nfs-data
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /media/nate/Media12TB/services/plexk8s
+    server: 192.168.1.60     
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plexserver-pvc-config
+spec:
+  storageClassName: ""
+  volumeName: plexserver-pv-nfs-config
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plexserver-pvc-data
+spec:
+  storageClassName: ""
+  volumeName: plexserver-pv-nfs-data
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1T
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: plexserver
+  name: plexserver
+spec:
+  replicas: 0
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: plexserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: plexserver
+    spec:
+      volumes:
+      - name: nfs-movies
+        nfs:
+          server: 192.168.1.60
+          path: /media/nate/Media12TB/media/movies
+      - name: nfs-christmas
+        nfs:
+          server: 192.168.1.60
+          path: /media/nate/Media12TB/media/christmas
+      - name: nfs-tv
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/tv
+      - name: nfs-audiobooks
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/audiobooks
+      - name: nfs-fitness
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/fitness
+      - name: nfs-music
+        nfs:
+          server: 192.168.1.60
+          path:  /media/14TB_00/media/music
+      - name: nfs-plex-config
+        persistentVolumeClaim:
+          claimName: plexserver-pvc-config
+      - name: nfs-data
+        persistentVolumeClaim:
+          claimName: plexserver-pvc-data
+      # nodeSelector:
+      #   kubernetes.io/arch: arm64
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      containers:
+      - env:
+        - name: PLEX_CLAIM
+          value: ""
+        - name: PGID
+          value: "1002"
+        - name: PUID
+          value: "998"
+        - name: VERSION
+          value: latest
+        - name: TZ
+          value: America/Chicago
+        image: lscr.io/linuxserver/plex
+        imagePullPolicy: Always
+        name: plexserver
+        ports:
+        - containerPort: 32400
+          name: pms-web
+          protocol: TCP
+        - containerPort: 32469
+          name: dlna-tcp
+          protocol: TCP
+        - containerPort: 1900
+          name: dlna-udp
+          protocol: UDP
+        - containerPort: 3005
+          name: plex-companion
+          protocol: TCP  
+        - containerPort: 5353
+          name: discovery-udp
+          protocol: UDP  
+        - containerPort: 8324
+          name: plex-roku
+          protocol: TCP  
+        - containerPort: 32410
+          name: gdm-32410
+          protocol: UDP
+        - containerPort: 32412
+          name: gdm-32412
+          protocol: UDP
+        - containerPort: 32413
+          name: gdm-32413
+          protocol: UDP
+        - containerPort: 32414
+          name: gdm-32414
+          protocol: UDP
+        resources:
+        stdin: true
+        tty: true
+        volumeMounts:
+        - name: nfs-christmas
+          mountPath: /media/nate/Media12TB/media/christmas
+        - name: nfs-movies
+          mountPath: /media/nate/Media12TB/media/movies
+        - name: nfs-tv
+          mountPath: /media/14TB_00/media/tv
+        - name: nfs-audiobooks
+          mountPath: /media/14TB_00/media/audiobooks
+        - name: nfs-fitness
+          mountPath: /media/14TB_00/media/fitness
+        - name: nfs-music
+          mountPath: /media/14TB_00/media/music
+        - name: nfs-plex-config
+          mountPath: /config
+        - name: nfs-data 
+          mountPath: /data
+      restartPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: plex-udp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: plexserver
+spec:
+  selector:
+    app: plexserver
+  ports:
+  - port: 1900
+    targetPort: 1900
+    name: dlna-udp
+    protocol: UDP
+  - port: 5353
+    targetPort: 5353
+    name: discovery-udp
+    protocol: UDP
+  - port: 32410
+    targetPort: 32410
+    name: gdm-32410
+    protocol: UDP
+  - port: 32412
+    targetPort: 32412
+    name: gdm-32412
+    protocol: UDP
+  - port: 32413
+    targetPort: 32413
+    name: gdm-32413
+    protocol: UDP
+  - port: 32414
+    targetPort: 32414
+    name: gdm-32414
+    protocol: UDP
+  type: LoadBalancer
+  loadBalancerIP: 192.168.1.182
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: plex-tcp
+  annotations:
+    metallb.universe.tf/allow-shared-ip: plexserver
+spec:
+  selector:
+    app: plexserver
+  ports:                      
+  - port: 32400
+    targetPort: 32400
+    name: pms-web
+    protocol: TCP
+  - port: 3005
+    targetPort: 3005
+    name: plex-companion
+  - port: 8324
+    name: plex-roku
+    targetPort: 8324  
+    protocol: TCP  
+  - port: 32469
+    targetPort: 32469
+    name: dlna-tcp
+    protocol: TCP
+  type: LoadBalancer
+  loadBalancerIP: 192.168.1.182
