@@ -5,7 +5,7 @@ metadata:
   namespace: pool
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: nuc02
+#    volume.kubernetes.io/selected-node: nuc02
 spec:
   accessModes:
     - ReadWriteOnce
@@ -36,14 +36,14 @@ spec:
         nameservers:
           - 1.1.1.1
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - nuc02
+#        nodeAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            nodeSelectorTerms:
+#              - matchExpressions:
+#                  - key: kubernetes.io/hostname
+#                    operator: In
+#                    values:
+#                      - nuc02
       containers:
       - image: n8marshall/nodejs-poolcontroller-dashpanel:1661172109
         name: pool-ui

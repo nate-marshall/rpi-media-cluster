@@ -50,7 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: mosquitto
     spec:
-      nodeName: nuc02
+#      nodeName: nuc02
       containers:
         - name: mosquitto
           image: "eclipse-mosquitto:2.0.12"
