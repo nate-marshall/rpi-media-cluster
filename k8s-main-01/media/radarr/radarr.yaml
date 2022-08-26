@@ -29,8 +29,8 @@ spec:
               value: "America/Chicago"
           resources:
             requests:
-              cpu: 1000m
-              memory: 512Mi
+              cpu: 100m
+              memory: 100Mi
             limits:
               cpu: 2000m
               memory: 1000Mi
