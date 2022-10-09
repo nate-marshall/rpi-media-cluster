@@ -1,0 +1,10 @@
+---
+apiVersion: v2
+name: metallb-subchart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+dependencies:
+  - name: metallb
+    version: 2.37.4
+    repository: https://metallb.github.io/metallb
