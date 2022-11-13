@@ -5,5 +5,5 @@ resources:
   - resources/pool-ui-configmap.yaml
 images:
   - name: n8marshall/nodejs-poolcontroller-dashpanel
-    newTag: "1668367094"
+    newTag: "latest"
 namespace: pool
