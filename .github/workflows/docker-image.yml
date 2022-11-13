@@ -47,7 +47,7 @@ jobs:
       -  
         shell: bash
         run: |
-         VERSION=$(date +%s)
+         env|sort
       -
         name: Build and push
         uses: docker/build-push-action@v3
