@@ -44,10 +44,14 @@ jobs:
         with:
           username: n8marshall
           password: ${{ secrets.DOCKERHUB_PASS }}
+      -  
+        shell: bash
+        run: |
+         VERSION=$(date +%s)
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: n8marshall/nodejs-poolcontroller-dashpanel:${{ github.event.pull_request.head.sha }}
+          tags: n8marshall/nodejs-poolcontroller-dashpanel:${VERSION}
