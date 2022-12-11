@@ -8,6 +8,7 @@ resources:
   # - kube-system.yaml
   - media.yaml
   # - metallb.yaml
+  - monitoring.yaml
   - pool.yaml
   # - prometheus.yaml
   # - signoz.yaml
