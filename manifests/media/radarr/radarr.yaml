@@ -95,7 +95,7 @@ metadata:
   namespace: media
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    path: k8s-main-01/
+    path: k3s-main-20/
 spec:
   accessModes:
     - ReadWriteOnce
