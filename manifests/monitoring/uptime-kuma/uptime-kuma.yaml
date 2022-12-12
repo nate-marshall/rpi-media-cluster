@@ -24,12 +24,12 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /app/data
-              name: uptime-kuma-pvc-claim0
+              name: uptime-kuma-pvc
       restartPolicy: Always
       volumes:
         - name: uptime-kuma-pvc
           persistentVolumeClaim:
-            claimName: uptime-kuma-pvc-claim0
+            claimName: uptime-kuma-pvc
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
