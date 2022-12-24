@@ -27,30 +27,9 @@ A bunch of yamls to run my media server apps on a Lightweight Kubernetes cluster
 
 
 
+{"value":"options:{value:remote}"}
 
-{
-      "name": "temps",
-      "description": "Populate the temp sensor",
-      "topics": [
-        {
-          "topic": "@bind=vars.hassTopic;/sensor/@bind=vars.mqttTopic;/@bind=vars.mqttTopic;-1-airsensor/config",
-          "useRootTopic": false,
-          "processor": [
-            "let device_id = {",
-            " name : 'Pool Controller - njsPC',",
-            " ids: [`${ctx.vars.mqttTopic}`],",
-            " suggested_area : 'Pool'};",
-            "return JSON.stringify({ name: `Air temp`,",
-            "unique_id: `poolController-1-airsensor`,",
-            "availability_topic: `${ctx.vars.mqttTopic}/state/status`,",
-            "availability_template: \"{{'online' if value_json.name == 'ready' else 'offline'}}\",",
-            "device: device_id,",
-            "device_class: 'temperature',",
-            "state_class: 'measurement',",
-            "state_topic: `${ctx.vars.mqttTopic}/state/temps/air`,",
-            "unit_of_measurement: `°${state.temps.data.units.name}`,",
-            "value_template: '{{value_json.temp}}'});"
-          ]
-        }
-      ]
-    }
+["1_ChromaFlake_16_Diamond_1,1_ChromaFlake_16_Diamond_2,2_ChromaFlake_16_3_prong_2,2_ChromaFlake_16_3_prong_3,3_ChromaFlake_16_Arrow_2,3_ChromaFlake_16_Arrow_3,4_ChromaFlake_16_2_prong_2,4_ChromaFlake_16_2_prong_4,Boscoyo_ChromaCane_1,Boscoyo_ChromaCane_2,Boscoyo_ChromaCane_3,Boscoyo_ChromaCane_4,Boscoyo_ChromaCane_5,Boscoyo_ChromaFlake_12_2_prong,Boscoyo_ChromaFlake_12_3_prong,Boscoyo_ChromaFlake_12_Arrow,Boscoyo_ChromaFlake_12_Diamond,Boscoyo_ChromaGlow_Present_Lrg,Boscoyo_ChromaGlow_Present_Med,Boscoyo_ChromaGlow_Present_Sml,Boscoyo_ChromaOrnament_3_Round_with_Spinner,ChromaTree_Slender_4ft,ChromaTree_Slender_4ft-2,Driveway_right_ground,Flowerbed_border,Front_Door,GarageDoor1,GarageDoor1-2-Roof-2,GarageDoor2,GarageDoor3,GarageDoor3-Roof,Left_Driveway_Line,Office-Roof,OfficeWindowArchLeft,OfficeWindowArchRight,Ornament_1,Ornament_2,Ornament_3,Ornament_4,Front Porch", "Enabled", "WLED - Twinkleup", "Horizontal", "128", "128", "128", "Default", "#ff0000", "#00ff04", "#ffffff"],
+
+
+{"colors":["#ff0000","#00ff00","#0000ff"],"brightness":128,"speed":128,"intensity":128,"bufferMapping":"Horizontal","palette":"Default","multisync":true,"models":["1_ChromaFlake_16_Diamond_1,1_ChromaFlake_16_Diamond_2,2_ChromaFlake_16_3_prong_2,2_ChromaFlake_16_3_prong_3,3_ChromaFlake_16_Arrow_2,3_ChromaFlake_16_Arrow_3,4_ChromaFlake_16_2_prong_2,4_ChromaFlake_16_2_prong_4,Boscoyo_ChromaCane_1,Boscoyo_ChromaCane_2,Boscoyo_ChromaCane_3,Boscoyo_ChromaCane_4,Boscoyo_ChromaCane_5,Boscoyo_ChromaFlake_12_2_prong,Boscoyo_ChromaFlake_12_3_prong,Boscoyo_ChromaFlake_12_Arrow,Boscoyo_ChromaFlake_12_Diamond,Boscoyo_ChromaGlow_Present_Lrg,Boscoyo_ChromaGlow_Present_Med,Boscoyo_ChromaGlow_Present_Sml,Boscoyo_ChromaOrnament_3_Round_with_Spinner,ChromaTree_Slender_4ft,ChromaTree_Slender_4ft-2,Driveway_right_ground,Flowerbed_border,Front_Door,GarageDoor1,GarageDoor1-2-Roof-2,GarageDoor2,GarageDoor3,GarageDoor3-Roof,Left_Driveway_Line,Office-Roof,OfficeWindowArchLeft,OfficeWindowArchRight,Ornament_1,Ornament_2,Ornament_3,Ornament_4,Front Porch"],"systems":["100.92.214.124"]}
