@@ -10,5 +10,5 @@ resources:
   # - metallb.yaml
   - monitoring.yaml
   - pool.yaml
-  # - prometheus.yaml
+  - prometheus.yaml
   # - signoz.yaml
