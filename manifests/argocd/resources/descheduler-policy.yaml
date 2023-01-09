@@ -1,0 +1,9 @@
+---
+apiVersion: "descheduler/v1alpha1"
+kind: "DeschedulerPolicy"
+strategies:
+  "PodLifeTime":
+    enabled: true
+    params:
+      podLifeTime:
+        maxPodLifeTimeSeconds: 172800 # pods run for a maximum of 2 days

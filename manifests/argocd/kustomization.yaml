@@ -2,9 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.5.5
-  - github.com/kubernetes-sigs/descheduler/kubernetes/deployment?ref=v0.26.0
   # - resources/argocd-ingress.yaml
   - ../../argocd-proj-apps
+  # Descheduler
+  - github.com/kubernetes-sigs/descheduler/kubernetes/deployment?ref=v0.26.0
+  - resources/descheduler-policy.yaml
 
 patchesStrategicMerge:
   - resources/argocd-application-controller.yaml
