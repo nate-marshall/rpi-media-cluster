@@ -1,8 +1,18 @@
-apiVersion: "descheduler/v1alpha1"
-kind: "DeschedulerPolicy"
-strategies:
-  "PodLifeTime":
-    enabled: true
-    params:
-      podLifeTime:
-        maxPodLifeTimeSeconds: 172800 # pods run for a maximum of 2 days
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: descheduler-policy-configmap
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha1"
+    kind: "DeschedulerPolicy"
+    strategies:
+      "RemoveDuplicates":
+         enabled: true
+      "RemovePodsViolatingInterPodAntiAffinity":
+         enabled: true
+      "PodLifeTime":
+        enabled: true
+        params:
+          podLifeTime:
+            maxPodLifeTimeSeconds: 172800 # pods run for a maximum of 2 days
