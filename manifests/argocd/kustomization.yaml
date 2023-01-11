@@ -5,8 +5,8 @@ resources:
   # - resources/argocd-ingress.yaml
   - ../../argocd-proj-apps
   # Descheduler
-  - github.com/kubernetes-sigs/descheduler/kubernetes/deployment?ref=v0.26.0
-  - resources/descheduler-policy.yaml
+  #- github.com/kubernetes-sigs/descheduler/kubernetes/deployment?ref=v0.26.0
+  #- resources/descheduler-policy.yaml
 
 patchesStrategicMerge:
   - resources/argocd-application-controller.yaml
