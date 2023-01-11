@@ -12,3 +12,4 @@ resources:
   - pool.yaml
   - prometheus.yaml
   # - signoz.yaml
+  - vault.yaml
