@@ -4,6 +4,7 @@ resources:
   - https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.5.6
   # - resources/argocd-ingress.yaml
   - ../../argocd-proj-apps
+  - resources/cmp-plugin.yaml
   # Descheduler
   #- github.com/kubernetes-sigs/descheduler/kubernetes/deployment?ref=v0.26.0
   #- resources/descheduler-policy.yaml
