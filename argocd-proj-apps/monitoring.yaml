@@ -31,8 +31,8 @@ spec:
     repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
     targetRevision: master
     path: manifests/monitoring
-    plugin:
-      name: argocd-vault-plugin
+    # plugin:
+    #   name: argocd-vault-plugin
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
