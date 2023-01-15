@@ -67,7 +67,7 @@ spec:
     app: homeassistant
   type: LoadBalancer
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.1.196
+  loadBalancerIP: 192.168.1.
   ports:
     - protocol: TCP
       port: 8123
