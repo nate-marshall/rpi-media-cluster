@@ -31,6 +31,8 @@ spec:
     repoURL: https://github.com/nate-marshall/rpi-media-cluster.git
     targetRevision: master
     path: manifests/pool-ui
+    plugin:
+      name: argocd-vault-plugin
   destination:
     server: https://kubernetes.default.svc
     namespace: pool
