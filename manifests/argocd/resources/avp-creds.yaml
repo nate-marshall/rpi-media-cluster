@@ -1,13 +1,11 @@
-cat <<EOF | kubectl apply -n argocd -f -
+#cat <<EOF | kubectl apply -n argocd -f -
 apiVersion: v1
 stringData:
-  VAULT_ADDR: https://192.168.1.196
-  VAULT_TOKEN: mysecrettoken
-  AVP_TYPE: vault
-  AVP_AUTH_TYPE: token
+  # Will be renamed to ARGOCD_ENV_AVP_AUTH_TYPE by ArgoCD before reaching the plugin.
+  AVP_AUTH_TYPE: vault
 kind: Secret
 metadata:
-  name: argocd-vault-plugin-credentials
+  name: vault-configuration
   namespace: argocd
 type: Opaque
-EOF
+#EOF
