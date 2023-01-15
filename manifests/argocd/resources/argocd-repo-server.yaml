@@ -7,22 +7,25 @@ spec:
   revisionHistoryLimit: 2
   template:
     spec:
-#      volumes:
-#        - name: custom-tools
-#          emptyDir: {}
-#      initContainers:
-#        - name: download-tools
-#          image: alpine:3.8
-#          command: [ sh, -c ]
-#          args:
-#            - >-
-#              wget -O argocd-vault-plugin
-#              https://github.com/IBM/argocd-vault-plugin/releases/download/v1.2.0/argocd-vault-plugin_1.2.0_linux_amd64 &&
-#              chmod +x argocd-vault-plugin &&
-#              mv argocd-vault-plugin /custom-tools
-#          volumeMounts:
-#            - mountPath: /custom-tools
-#              name: custom-tools
+      volumes:
+        - name: custom-tools
+          emptyDir: {}
+      initContainers:
+        - name: download-tools
+          image: alpine:3.8
+          command: [ sh, -c ]
+          env:
+          - name: AVP_VERSION
+            value: "1.13.1"
+          args:
+            - >-
+              wget -O argocd-vault-plugin
+              https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &&
+              chmod +x argocd-vault-plugin &&
+              mv argocd-vault-plugin /custom-tools
+          volumeMounts:
+            - mountPath: /custom-tools
+              name: custom-tools
       nodeSelector:
         kubernetes.io/arch: amd64
       containers:
@@ -36,10 +39,12 @@ spec:
           - warn
           - --redis
           - argocd-redis:6379
-#        volumeMounts:
-#          - mountPath: /usr/local/bin/argocd-vault-plugin
-#            name: custom-tools
-#            subPath: argocd-vault-plugin
-#        envFrom:
-#          - secretRef:
-#              name: argocd-vault-plugin-credentials
+        volumeMounts:
+          - mountPath: /usr/local/bin/argocd-vault-plugin
+            name: custom-tools
+            subPath: argocd-vault-plugin
+        envFrom:
+          - secretRef:
+              name: argocd-vault-plugin-credentials
+      # Not strictly necessary, but required for passing AVP configuration from a secret and for using Kubernetes auth to Hashicorp Vault
+      automountServiceAccountToken: true

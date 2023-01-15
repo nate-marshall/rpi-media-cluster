@@ -2,6 +2,7 @@
 # Source: vault/templates/server-disruptionbudget.yaml
 # PodDisruptionBudget to prevent degrading the server cluster through
 # voluntary cluster changes.
+# https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-minikube-tls
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -296,7 +297,7 @@ spec:
   loadBalancerIP: 192.168.1.196  
   ports:
     - name: https
-      port: 8200
+      port: 443
       targetPort: 8200
     - name: https-internal
       port: 8201
