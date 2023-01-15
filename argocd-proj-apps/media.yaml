@@ -33,6 +33,9 @@ spec:
     path: manifests/media
   plugin:
     name: argocd-vault-plugin
+    env:
+    - name: AVP_SECRET
+      value: argocd-vault-plugin-credentials
   destination:
     server: https://kubernetes.default.svc
     namespace: media

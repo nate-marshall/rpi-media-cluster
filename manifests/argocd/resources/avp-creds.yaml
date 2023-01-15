@@ -1,4 +1,4 @@
-cat <<EOF | kubectl apply -n argocd -f -
+# cat <<EOF | kubectl apply -n argocd -f -
 apiVersion: v1
 stringData:
   VAULT_ADDR: https://192.168.1.196
@@ -10,10 +10,9 @@ metadata:
   name: vault-configuration
   namespace: argocd
 type: Opaque
-EOF
-
+# EOF
 ---
-cat <<EOF | kubectl apply -n argocd -f -
+# cat <<EOF | kubectl apply -n argocd -f -
 apiVersion: v1
 stringData:
   VAULT_ADDR: https://192.168.1.196
@@ -25,4 +24,4 @@ metadata:
   name: argocd-vault-plugin-credentials
   namespace: argocd
 type: Opaque
-EOF
+# EOF
