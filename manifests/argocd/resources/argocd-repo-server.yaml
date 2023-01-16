@@ -5,13 +5,7 @@ metadata:
 spec:
   template:
     spec:
-
-      # Mount SA token for Kubernets auth
-      # Note: In 2.4.0 onward, there is a dedicated SA for repo-server (not default)
-      # Note: This is not fully supported for Kubernetes < v1.19
       automountServiceAccountToken: true
-
-      # Each of the embedded YAMLs inside cmp-plugin ConfigMap will be mounted into it's respective plugin sidecar
       volumes:
         - configMap:
             name: cmp-plugin
@@ -42,6 +36,9 @@ spec:
       - name: avp-helm
         command: [/var/run/argocd/argocd-cmp-server]
         image: quay.io/argoproj/argocd:v0.0.0
+        env:
+        - name: AVP_SECRET
+          value: argocd-vault-plugin-credentials
         securityContext:
           runAsNonRoot: true
           runAsUser: 999
@@ -67,6 +64,9 @@ spec:
       - name: avp-kustomize
         command: [/var/run/argocd/argocd-cmp-server]
         image: quay.io/argoproj/argocd:v0.0.0
+        env:
+        - name: AVP_SECRET
+          value: argocd-vault-plugin-credentials
         securityContext:
           runAsNonRoot: true
           runAsUser: 999
@@ -92,6 +92,9 @@ spec:
       - name: avp
         command: [/var/run/argocd/argocd-cmp-server]
         image: quay.io/argoproj/argocd:v0.0.0
+        env:
+        - name: AVP_SECRET
+          value: argocd-vault-plugin-credentials
         securityContext:
           runAsNonRoot: true
           runAsUser: 999

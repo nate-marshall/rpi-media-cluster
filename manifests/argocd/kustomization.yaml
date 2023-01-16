@@ -13,8 +13,6 @@ resources:
   #- resources/descheduler-policy.yaml
 
 patchesStrategicMerge:
-  - resources/argocd-application-controller.yaml
-  - resources/argocd-dex-server.yaml
   - resources/argocd-repo-server.yaml
   - resources/argocd-rbac-cm.yaml
   - resources/argocd-server.yaml
