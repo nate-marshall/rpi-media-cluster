@@ -49,8 +49,8 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: sonarr-config
-            - mountPath: /nfs/media/tv
-              name: nfs-tv
+            # - mountPath: /nfs/media/tv
+            #   name: nfs-tv
             - mountPath: /nfs/media/ended
               name: nfs-tv-ended
             - mountPath: /nfs/media/tv2
@@ -63,10 +63,10 @@ spec:
         nameservers:
           - 1.1.1.1
       volumes:
-        - name: nfs-tv
-          nfs:
-            server: 192.168.1.60
-            path:  /media/14TB_00/media/tv
+        # - name: nfs-tv
+        #   nfs:
+        #     server: 192.168.1.60
+        #     path:  /media/14TB_00/media/tv
         - name: nfs-tv2
           nfs:
             server: 192.168.1.60
