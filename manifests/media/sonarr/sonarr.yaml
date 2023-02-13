@@ -26,8 +26,8 @@ spec:
 #                - /bin/sh
 #                - -c
 #                - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
-            initialDelaySeconds: 5
-            periodSeconds: 30
+#            initialDelaySeconds: 5
+#            periodSeconds: 30
           env:
             - name: PUID
               value: "998"
