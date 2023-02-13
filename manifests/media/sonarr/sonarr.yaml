@@ -20,12 +20,12 @@ spec:
       containers:
         - name: sonarr
 #          command: ["tail", "-f", "/dev/null"]
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
+#          livenessProbe:
+#            exec:
+#              command:
+#                - /bin/sh
+#                - -c
+#                - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
             initialDelaySeconds: 5
             periodSeconds: 30
           env:
