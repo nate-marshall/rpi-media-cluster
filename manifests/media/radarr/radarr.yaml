@@ -48,8 +48,6 @@ spec:
               name: radarr-config
             - mountPath: /nfs/media/movies
               name: nfs-movies
-            - mountPath: /nfs/media/christmas
-              name: nfs-christmas
             - mountPath: /nfs/downloads
               name: nfs-downloads
       dnsConfig:
