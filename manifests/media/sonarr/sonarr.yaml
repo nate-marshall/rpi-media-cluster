@@ -53,6 +53,8 @@ spec:
               name: nfs-downloads
             - mountPath: /nfs/tv
               name: nfs-m5nas
+            - mountPath: /nfs/mediaAndrew
+              name: nfs-b4nas
       dnsConfig:
         nameservers:
           - 1.1.1.1
@@ -61,6 +63,10 @@ spec:
           nfs:
             server: 192.168.1.38
             path:  /volume1/media/tvSeries
+        - name: nfs-b4nas
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/mediaAndrew
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60

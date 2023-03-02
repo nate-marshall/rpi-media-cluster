@@ -58,12 +58,8 @@ spec:
       volumes:
         - name: nfs-movies
           nfs:
-            server: 192.168.1.60
-            path: /media/nate/Media12TB/media/movies
-        - name: nfs-christmas
-          nfs:
-            server: 192.168.1.60
-            path: /media/nate/Media12TB/media/christmas
+            server: 192.168.1.38
+            path:  /volume1/mediaAndrew
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
