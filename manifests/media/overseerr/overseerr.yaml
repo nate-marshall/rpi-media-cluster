@@ -36,22 +36,10 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: overseerr-config
-            - mountPath: /mediafiles/12TB
-              name: media12tb-volume
-            - mountPath: /mediafiles/14TB
-              name: media14tb-volume
       dnsConfig:
         nameservers:
           - 1.1.1.1
       volumes:
-        - name: media14tb-volume
-          nfs:
-            server: 192.168.1.60
-            path: /media/14TB_00
-        - name: media12tb-volume
-          nfs:
-            server: 192.168.1.60
-            path: /media/nate/Media12TB
         - name: overseerr-config
           nfs:
             server: 192.168.1.60
