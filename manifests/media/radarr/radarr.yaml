@@ -40,7 +40,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - cat /nfs/downloads/healthy.txt && cat /nfs/media/movies/healthy.txt
+                - cat /nfs/downloads/healthy.txt
           ports:
             - containerPort: 7878
           volumeMounts:
