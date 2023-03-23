@@ -51,7 +51,7 @@ spec:
               name: sonarr-config
             - mountPath: /nfs/downloads
               name: nfs-downloads
-            - mountPath: /nfs/tv
+            - mountPath: /nfs/media/tv
               name: nfs-m5nas
             - mountPath: /nfs/mediaAndrew
               name: nfs-b4nas
