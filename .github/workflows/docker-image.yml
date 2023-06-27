@@ -33,4 +33,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: n8marshall/nodejs-poolcontroller-dashpanel:${GITHUB_RUN_ID}
+          tags: n8marshall/nodejs-poolcontroller-dashpanel:${{GITHUB_RUN_ID}}
