@@ -20,18 +20,6 @@ spec:
       containers:
         - name: amcrest-mqtt
           imagePullPolicy: Always
-          readinessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 5
-            failureThreshold: 5
-          livenessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 20
-            failureThreshold: 3
           env:
             - name: AMCREST_HOST
               valueFrom:
