@@ -4,6 +4,7 @@ resources:
   - resources/pool-ui.yaml
   - resources/pool-ui-configmap.yaml
 images:
-  - name: n8marshall/nodejs-poolcontroller-dashpanel
-    newTag: "10MAR2303"
+  - name: msmi/nodejs-poolcontroller-dashpanel
+    #newTag: "10MAR2303"
+    newTag: "latest"
 namespace: pool

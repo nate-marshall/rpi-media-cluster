@@ -5,8 +5,8 @@ metadata:
   namespace: pool
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
-    volume.kubernetes.io/selected-node: k3s-node-21
-    path: k3s-node-21/
+    volume.kubernetes.io/selected-node: k3s-node-25
+    path: k3s-node-25/
 spec:
   accessModes:
     - ReadWriteOnce
@@ -46,7 +46,8 @@ spec:
 #                    values:
 #                      - nuc02
       containers:
-      - image: n8marshall/nodejs-poolcontroller-dashpanel:000000
+      # - image: n8marshall/nodejs-poolcontroller-dashpanel:000000
+      - image: msmi/nodejs-poolcontroller-dashpanel:00000
         imagePullPolicy: Always
         name: pool-ui
         # command: ["tail", "-f", "/dev/null"]
