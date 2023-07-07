@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backup-script-configmap
+data:
+  backup-script.sh: |
+    #!/bin/sh
+    echo "Running backup script..."
+    # Add your backup commands here
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup-job
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup-runner
+            image: ubuntu:latest
+            #command: ["sh", "-c", "/scripts/backup-script.sh"]
+            command: ["tail", "-f", "/dev/null"]
+            volumeMounts:
+            - name: nas-photo
+              mountPath: /nas-photo
+            - name: script-volume
+              mountPath: /scripts
+          volumes:
+          - name: nfs-photo
+            nfs:
+              server: 192.168.1.38
+              path:  /volume1/photo
+          - name: script-volume
+            configMap:
+              name: backup-script-configmap
+          restartPolicy: OnFailure
