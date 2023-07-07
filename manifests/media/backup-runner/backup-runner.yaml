@@ -9,12 +9,12 @@ data:
     # Add your backup commands here
 
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: backup-job
 spec:
-  schedule: "0 0 * * *"
+  schedule: "* * * * *"
   jobTemplate:
     spec:
       template:
