@@ -23,7 +23,7 @@ spec:
           containers:
           - name: backup-runner
             image: ubuntu:latest
-            #command: ["sh", "-c", "/scripts/backup-script.sh"]
+            #command: ["bash", "-c", "/scripts/backup-script.sh"]
             command: ["tail", "-f", "/dev/null"]
             volumeMounts:
             - name: nas-photo
