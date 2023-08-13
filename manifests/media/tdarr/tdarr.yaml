@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tdarr
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app: tdarr
+  serviceName: tdarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tdarr
+    spec:
+      securityContext:
+        runAsUser: 0
+        fsGroup: 1000
+      initContainers:
+      - name: volume-permissions
+        image: busybox:1.31.1
+        command: ["sh", "-c", "chown -R 1000:1000 /app/configs && chown -R 1000:1000 /app/server"]
+        volumeMounts: 
+          - mountPath: /app/configs
+            name: config
+          - mountPath: /app/server
+            name: server                      
+      containers:
+         - name: tdarr
+           image: haveagitgat/tdarr:latest
+           imagePullPolicy: Always
+           env:
+             - name: PUID
+               value: "1000"
+             - name: PGID
+               value: "1000"
+             - name: internalNode
+               value: "true"
+             - name: nodeID
+               value: "internal"
+           ports:
+             - containerPort: 8265
+               name: ui
+             - containerPort: 8266
+               name: server
+           volumeMounts:        
+             - mountPath: /app/configs
+               name: config
+             - mountPath: /app/server
+               name: server               
+             - mountPath: /app/logs
+               name: logs
+             - mountPath: /movies
+               name: movies
+             - mountPath: /tv
+               name: tv
+      volumes:          
+        - name: logs
+          emptyDir: {}
+        - name: movies
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/media/movies       
+        - name: tv
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/media/tvSeries
+        - name: server
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/media/server
+        - name: config
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/media/config
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: tdarr
+  namespace: media
+spec:
+  selector:
+    app: tdarr
+  ports:
+  - protocol: TCP
+    name: ui
+    port: 8265
+  - protocol: TCP
+    name: server
+    port: 8266
