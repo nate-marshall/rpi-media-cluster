@@ -7,7 +7,7 @@ metadata:
   labels:
     app: handbrake-tv
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -17,6 +17,15 @@ spec:
       labels:
         app: handbrake-tv
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - osboxes
       containers:
         - name: handbrake-tv
           imagePullPolicy: Always
@@ -41,8 +50,8 @@ spec:
               value: "mp4"
             - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
               value: "30"
-            # - name: AUTOMATED_CONVERSION_OUTPUT_DIR
-            #   value: "/nfs/downloads/tmp/tv"
+            - name: AUTOMATED_CONVERSION_OUTPUT_DIR
+              value: "/output"
             - name: AUTOMATED_CONVERSION_OUTPUT_SUBDIR
               value: "SAME_AS_SRC"
             - name: AUTOMATED_CONVERSION_OVERWRITE_OUTPUT
@@ -85,11 +94,11 @@ spec:
         - name: output
           nfs:
             server: 192.168.1.38
-            path:  /volume1/media/tvSeries/hb-output
+            path:  /volume1/media/tvSeries/output
         - name: nfs-tv
           nfs:
-            server: 192.168.1.38
-            path:  /volume1/media/tvSeries
+            server: 192.168.1.60
+            path:  /media/14TB_00/media/tv
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
