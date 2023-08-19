@@ -4,7 +4,7 @@ resources:
   - amcrest-mqtt
   - backup-runner
   # - cockroachdb
-  #- handbrake
+  - handbrake
   #- heimdall
   #- homeassistant
   - overseerr
@@ -13,4 +13,4 @@ resources:
   - radarr
   - sonarr
   - tautulli
-  - tdarr
+  # - tdarr

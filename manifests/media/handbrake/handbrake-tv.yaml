@@ -80,16 +80,16 @@ spec:
       volumes:
         - name: watch
           nfs:
-            server: 192.168.1.60
-            path: /media/14TB_00/media/tv/The_X-Files
+            server: 192.168.1.38
+            path:  /volume1/media/tvSeries
         - name: output
           nfs:
-            server: 192.168.1.60
-            path: /media/14TB_00/media/tv/The_X-Files
+            server: 192.168.1.38
+            path:  /volume1/media/tvSeries/hb-output
         - name: nfs-tv
           nfs:
-            server: 192.168.1.60
-            path:  /media/14TB_00/media/tv
+            server: 192.168.1.38
+            path:  /volume1/media/tvSeries
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
