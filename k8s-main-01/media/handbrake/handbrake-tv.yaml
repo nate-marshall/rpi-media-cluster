@@ -97,8 +97,8 @@ spec:
             path:  /volume1/media/tvSeries/output
         - name: nfs-tv
           nfs:
-            server: 192.168.1.60
-            path:  /media/14TB_00/media/tv
+            server: 192.168.1.38
+            path:  /volume1/media/tvSeries
         - name: nfs-downloads
           nfs:
             server: 192.168.1.60
