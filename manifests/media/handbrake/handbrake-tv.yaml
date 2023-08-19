@@ -56,13 +56,13 @@ spec:
               value: "SAME_AS_SRC"
             - name: AUTOMATED_CONVERSION_OVERWRITE_OUTPUT
               value: "1"
-          resources:
-            requests:
-              cpu: 1000m
-              memory: 2048Mi
-            limits:
-              cpu: 2000m
-              memory: 4096Mi
+          # resources:
+          #   requests:
+          #     cpu: 1000m
+          #     memory: 2048Mi
+          #   limits:
+          #     cpu: 2000m
+          #     memory: 4096Mi
           image: jlesage/handbrake
           livenessProbe:
             exec:
