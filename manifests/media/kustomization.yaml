@@ -9,7 +9,7 @@ resources:
   #- homeassistant
   - overseerr
   #- plexmm
-  - plexserver
+  # - plexserver
   - radarr
   - sonarr
   - tautulli
