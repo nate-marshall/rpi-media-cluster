@@ -61,7 +61,7 @@ spec:
               cpu: 512m
               memory: 2048Mi
             limits:
-              cpu: 4096Mi
+              cpu: 4096m
               memory: 4096Mi
           image: jlesage/handbrake
           livenessProbe:
