@@ -25,7 +25,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - k3s-node-25
+                      - "k3s-node-25"
       containers:
         - name: handbrake-tv
           imagePullPolicy: Always
@@ -61,7 +61,7 @@ spec:
               cpu: 512m
               memory: 2048Mi
             limits:
-              cpu: 4096Mim
+              cpu: 4096Mi
               memory: 4096Mi
           image: jlesage/handbrake
           livenessProbe:
