@@ -94,7 +94,7 @@ spec:
         - name: output
           nfs:
             server: 192.168.1.38
-            path:  /volume1/media/tvSeries/output
+            path:  /volume1/media/handbrake_out
         - name: nfs-tv
           nfs:
             server: 192.168.1.38
