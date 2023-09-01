@@ -1,0 +1,27 @@
+version: "3"
+services:
+  node-bootstrap:
+    image: aceberg/node-bootstrap
+    restart: unless-stopped
+    ports:
+    - 8850:8850
+  wyl:
+    image: aceberg/watchyourlan
+    network_mode: "host"      
+    restart: unless-stopped
+    # command: "-n http://127.0.0.1:8850"
+    depends_on:
+      - node-bootstrap
+    volumes:
+    - /volume1/docker/watchyourlan/data:/data
+    environment:
+      TZ: America/Chicago               # required: needs your TZ for correct time
+      IFACE: "eth0"                     # required: 1 or more interface
+      DBPATH: "/data/db.sqlite"         # optional, default: /data/db.sqlite
+      GUIIP: "192.168.1.38"                  # optional, default: localhost
+      GUIPORT: "8840"                   # optional, default: 8840
+      TIMEOUT: "120"                    # optional, time in seconds, default: 60
+      SHOUTRRR_URL: ""                  # optional, set url to notify
+      THEME: "slate"                    # optional
+      IGNOREIP: "no"                    # optional
+      COLOR: "dark"

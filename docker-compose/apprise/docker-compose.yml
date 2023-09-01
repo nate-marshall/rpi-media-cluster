@@ -1,0 +1,10 @@
+version: "3"
+services:
+  apprise:
+    image: caronc/apprise
+    network_mode: "host"      
+    restart: unless-stopped
+    ports:
+    - 8000:8000
+    volumes:
+    - /volume1/docker/apprise/config:/config
