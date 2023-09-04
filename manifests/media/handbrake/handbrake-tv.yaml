@@ -7,7 +7,7 @@ metadata:
   labels:
     app: handbrake-tv
 spec:
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -88,13 +88,11 @@ spec:
           - 1.1.1.1
       volumes:
         - name: watch
+          emptyDir: {}
+        - name: output
           nfs:
             server: 192.168.1.60
             path: /media/nate/Media12TB/media_downloads/downloads/complete/temptv
-        - name: output
-          nfs:
-            server: 192.168.1.38
-            path:  /volume1/media/tvSeries
         - name: nfs-tv
           nfs:
             server: 192.168.1.38
