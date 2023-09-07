@@ -25,7 +25,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - "k3s-main-23"
+                      - "k3s-node-23"
       containers:
         - name: handbrake-tv-sonarr
           imagePullPolicy: Always
