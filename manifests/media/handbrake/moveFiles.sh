@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sabnzbd_complete_folder="/media/nate/Media12TB/media_downloads/downloads/complete/temptv"
-handbrake_watch_folder="/media/nate/Media12TB/media_downloads/tmp/tv"
+handbrake_watch_folder="/media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr"
 
 # Function to move files from source to destination using rsync
 move_files() {
