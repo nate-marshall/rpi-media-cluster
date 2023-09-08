@@ -12,3 +12,4 @@ homeassistant/ha-ing-m5.yaml
 appdaemon/appdaemon-ing-m5.yaml
 appdaemon/appdaemon-secrets-m5.yaml
 manifests/media/amcrest-mqtt/amcrest-mqtt-secret.yaml
+debug.log
