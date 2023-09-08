@@ -1,0 +1,26 @@
+services:
+  sonarr:
+    image: mdhiggins/sonarr-sma
+    container_name: sonarr
+    volumes:
+      - /volume1/docker/sonarr/config:/config
+      - /volume1/docker/sonarr/sma:/usr/local/sma/config
+      - /volume1/media/tvSeries:/tv
+      - type: volume
+        source: downloads
+        target: /downloads
+        volume:
+          nocopy: true
+    ports:
+      - 8989:8989
+    restart: always
+    environment:
+      - PUID=998
+      - PGID=1002
+      - SMA_UPDATE=true
+volumes:
+  downloads:
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.60,nolock,soft,rw
+      device: :/media/nate/Media12TB/media_downloads/downloads/complete/temptv

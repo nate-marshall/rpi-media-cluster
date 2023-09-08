@@ -12,5 +12,6 @@ resources:
   # - plexserver
   - radarr
   - sonarr
+  # - sonarr-sma
   - tautulli
   # - tdarr

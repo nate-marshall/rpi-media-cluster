@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: handbrake-tv-deployment
+  name: handbrake-tv-sonarr-deployment
   namespace: media
   labels:
-    app: handbrake-tv
+    app: handbrake-tv-sonarr
 spec:
   replicas: 1
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: handbrake-tv
+      app: handbrake-tv-sonarr
   template:
     metadata:
       labels:
-        app: handbrake-tv
+        app: handbrake-tv-sonarr
     spec:
       affinity:
         nodeAffinity:
@@ -25,9 +25,9 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - "k3s-main-22"
+                      - "k3s-node-23"
       containers:
-        - name: handbrake-tv
+        - name: handbrake-tv-sonarr
           imagePullPolicy: Always
           env:
             - name: USER_ID
@@ -90,7 +90,7 @@ spec:
         - name: watch
           nfs:
             server: 192.168.1.60
-            path:  /media/nate/Media12TB/media_downloads/tmp/tv
+            path:  /media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr
         - name: output
           nfs:
             server: 192.168.1.38
@@ -106,23 +106,23 @@ spec:
         - name: handbrake-tv-config
           nfs:
             server: 192.168.1.60
-            path: /media/nate/Media12TB/services/handbrake-tv/config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: handbrake-tv-service
-  namespace: media
-spec:
-  loadBalancerIP: 192.168.1.192
-  ports:
-    - protocol: TCP
-      name: "5800"
-      port: 5800
-  selector:
-    app: handbrake-tv
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+            path: /media/nate/Media12TB/services/handbrake-tv-sonarr/config
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: handbrake-tv-service
+#   namespace: media
+# spec:
+#   loadBalancerIP: 192.168.1.192
+#   ports:
+#     - protocol: TCP
+#       name: "5800"
+#       port: 5800
+#   selector:
+#     app: handbrake-tv
+#   type: LoadBalancer
+#   externalTrafficPolicy: Local
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim

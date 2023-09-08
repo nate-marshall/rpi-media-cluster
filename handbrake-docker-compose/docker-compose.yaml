@@ -1,0 +1,52 @@
+version: '3'
+services:
+  handbrake-tv:
+    container_name: handbrake-tv
+    image: jlesage/handbrake
+    volumes:
+      - <local config path>:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    network_mode: host
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+    environment:
+      - name: USER_ID
+      value: "998"
+      - name: GROUP_ID
+      value: "1002"
+      - name: UMASK
+      value: "003"
+      - name: TZ
+      value: "America/Chicago"
+      - name: KEEP_APP_RUNNING
+      value: "1"
+      - name: CLEAN_TMP_DIR
+      value: "1"
+      - name: AUTOMATED_CONVERSION_PRESET
+      value: "Custom/Very Fast 720p30v2"
+      - name: AUTOMATED_CONVERSION_KEEP_SOURCE
+      value: "0"
+      - name: AUTOMATED_CONVERSION_FORMAT
+      value: "mp4"
+      - name: AUTOMATED_CONVERSION_SOURCE_STABLE_TIME
+      value: "30"
+      - name: AUTOMATED_CONVERSION_OUTPUT_DIR
+      value: "/output"
+      - name: AUTOMATED_CONVERSION_OUTPUT_SUBDIR
+      value: "SAME_AS_SRC"
+      - name: AUTOMATED_CONVERSION_OVERWRITE_OUTPUT
+      value: "1"
+
+# docker run \
+#   -d \
+#   --cpuset-cpus=2,3 \
+#   --restart unless-stopped \
+#   -p 5800:5800 \
+#   -e USER_ID=1024 \
+#   -e GROUP_ID=100 \
+#   -v /volume1/docker/handbrake:/config:rw \
+#   -v /volume2/video:/storage:ro \
+#   -v /volume1/output:/output:rw \
+#   --name=handbrake \
+#   jlesage/handbrake:v1.25.1
+

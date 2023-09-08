@@ -1,0 +1,102 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr-sma-deployment
+  namespace: media
+  labels:
+    app: sonarr-sma
+spec:
+  replicas: 0
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: sonarr-sma
+  template:
+    metadata:
+      labels:
+        app: sonarr-sma
+    spec:
+      containers:
+        - name: sonarr-sma
+#          command: ["tail", "-f", "/dev/null"]
+          env:
+            - name: PUID
+              value: "998"
+            - name: PGID
+              value: "1002"
+            - name: TZ
+              value: "America/Chicago"
+          imagePullPolicy: Always
+          image: mdhiggins/sonarr-sma
+          # resources:
+          #   requests:
+          #     cpu: 1000m
+          #     memory: 512Mi
+          #   limits:
+          #     cpu: 3000m
+          #     memory: 1000Mi
+          ports:
+            - containerPort: 8989
+          volumeMounts:
+            - mountPath: /config
+              name: sonarr-config
+            - mountPath: /usr/local/sma/config
+              name: sonarr-sma-config
+            - mountPath: /tv
+              name: tv
+            - mountPath: /downloads
+              name: nfs-downloads
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+      volumes:
+
+        - name: sonarr-config
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/sonarr-sma/config
+        - name: sonarr-sma-config
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/services/sonarr-sma/sma-config
+        - name: tv
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/media/tvSeries
+        - name: nfs-downloads
+          nfs:
+            server: 192.168.1.60
+            path: /media/nate/Media12TB/media_downloads/downloads/complete/temptv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr-sma-service
+  namespace: media
+spec:
+  loadBalancerIP: 192.168.1.188
+  ports:
+    - protocol: TCP
+      name: "8989"
+      port: 8989
+  selector:
+    app: sonarr-sma
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: sonar-config-pvc
+#   namespace: media
+#   annotations:
+#     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+#     path: k3s-node-25/
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   storageClassName: local-path
+#   resources:
+#     requests:
+#       storage: 1Gi

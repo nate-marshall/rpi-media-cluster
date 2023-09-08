@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   # - handbrake-movies.yaml
   - handbrake-tv.yaml
+  - handbrake-tv-sonarr.yaml
