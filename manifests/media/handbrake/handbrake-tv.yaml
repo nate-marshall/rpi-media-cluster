@@ -67,7 +67,7 @@ spec:
           livenessProbe:
             exec:
               command:
-                - pgrep HandBrakeCLI
+                - /usr/bin/pgrep HandBrakeCLI
               periodSeconds: 35
               failureThreshold: 3
           ports:
