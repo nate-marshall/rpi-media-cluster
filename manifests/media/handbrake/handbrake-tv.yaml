@@ -67,9 +67,9 @@ spec:
           livenessProbe:
             exec:
               command:
-                - /bin/sh
-                - -c
-                - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
+                - pgrep HandBrakeCLI
+              periodSeconds: 35
+              failureThreshold: 3
           ports:
             - containerPort: 5800
           volumeMounts:
