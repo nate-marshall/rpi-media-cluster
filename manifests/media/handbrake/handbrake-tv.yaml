@@ -69,9 +69,9 @@ spec:
               command:
                 - /usr/bin/pgrep
                 - HandBrakeCLI
-              initialDelaySeconds: 35
-              periodSeconds: 35
-              failureThreshold: 3
+            initialDelaySeconds: 35
+            periodSeconds: 35
+            failureThreshold: 3
           ports:
             - containerPort: 5800
           volumeMounts:
