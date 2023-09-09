@@ -12,8 +12,18 @@ move_files() {
         download_name="$(basename "$download_dir")"
         rsync -a --remove-source-files "$download_dir/" "$destination_folder/$download_name/"
         echo "Moved: $download_name"
+        sleep 5
     done
+}
+
+# Function to cleanup the HandBrake output folder
+cleanup_handbrake() {
+    rm -rf "$handbrake_output_folder"/*
+    echo "Cleaned up HandBrake output folder"
 }
 
 # Move files from SABnzbd to HandBrake
 move_files "$sabnzbd_complete_folder" "$handbrake_watch_folder"
+
+# Cleanup the HandBrake output folder
+cleanup_handbrake
