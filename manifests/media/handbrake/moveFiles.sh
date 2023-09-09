@@ -24,7 +24,7 @@ move_files() {
 
 # Function to cleanup the HandBrake watch folder
 cleanup_handbrake() {
-    rm -rf "$handbrake_output_folder"/*
+    rm -rf "$handbrake_watch_folder"/*
     echo "Cleaned up HandBrake watch folder"
 }
 
