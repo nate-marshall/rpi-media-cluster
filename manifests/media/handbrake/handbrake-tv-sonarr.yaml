@@ -43,7 +43,7 @@ spec:
             - name: CLEAN_TMP_DIR
               value: "1"
             - name: AUTOMATED_CONVERSION_PRESET
-              value: "Custom/Very Fast 720p30v2"
+              value: "General/Very Fast 720p30v2"
             - name: AUTOMATED_CONVERSION_KEEP_SOURCE
               value: "0"
             - name: AUTOMATED_CONVERSION_FORMAT
