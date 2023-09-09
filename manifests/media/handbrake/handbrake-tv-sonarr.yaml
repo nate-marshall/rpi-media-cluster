@@ -64,11 +64,11 @@ spec:
               cpu: 4096m
               memory: 4096Mi
           image: jlesage/handbrake
-          livenessProbe:
-            exec:
-              command:
-                - /usr/bin/pgrep
-                - HandBrakeCLI
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - /usr/bin/pgrep
+          #       - HandBrakeCLI
             initialDelaySeconds: 35
             periodSeconds: 35
             failureThreshold: 3
