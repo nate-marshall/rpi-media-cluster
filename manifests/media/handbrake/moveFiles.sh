@@ -3,6 +3,12 @@
 sabnzbd_complete_folder="/media/nate/Media12TB/media_downloads/downloads/complete/temptv"
 handbrake_watch_folder="/media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr"
 
+# Check if any of the required environment variables are empty
+if [ -z "$sabnzbd_complete_folder" ] || [ -z "$handbrake_watch_folder" ]; then
+    echo "One or more environment variables are empty. Exiting."
+    exit 1
+fi
+
 # Function to move files from source to destination using rsync
 move_files() {
     source_folder="$1"
@@ -16,14 +22,14 @@ move_files() {
     done
 }
 
-# Function to cleanup the HandBrake output folder
+# Function to cleanup the HandBrake watch folder
 cleanup_handbrake() {
     rm -rf "$handbrake_output_folder"/*
-    echo "Cleaned up HandBrake output folder"
+    echo "Cleaned up HandBrake watch folder"
 }
 
 # Move files from SABnzbd to HandBrake
 move_files "$sabnzbd_complete_folder" "$handbrake_watch_folder"
 
-# Cleanup the HandBrake output folder
+# Cleanup the HandBrake watch folder
 cleanup_handbrake
