@@ -32,4 +32,4 @@ cleanup_handbrake() {
 move_files "$sabnzbd_complete_folder" "$handbrake_watch_folder"
 
 # Cleanup the HandBrake watch folder
-cleanup_handbrake
+#cleanup_handbrake
