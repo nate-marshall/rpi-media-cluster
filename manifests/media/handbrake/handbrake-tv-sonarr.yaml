@@ -43,7 +43,7 @@ spec:
             - name: CLEAN_TMP_DIR
               value: "1"
             - name: AUTOMATED_CONVERSION_PRESET
-              value: "Custom/Very Fast 720p30v2"
+              value: "General/Very Fast 720p30"
             - name: AUTOMATED_CONVERSION_KEEP_SOURCE
               value: "0"
             - name: AUTOMATED_CONVERSION_FORMAT
@@ -67,9 +67,11 @@ spec:
           livenessProbe:
             exec:
               command:
-                - /bin/sh
-                - -c
-                - cat /nfs/downloads/healthy.txt && cat /nfs/media/tv/healthy.txt
+                - /usr/bin/pgrep
+                - HandBrakeCLI
+            initialDelaySeconds: 35
+            periodSeconds: 3600
+            failureThreshold: 2
           ports:
             - containerPort: 5800
           volumeMounts:
@@ -93,8 +95,8 @@ spec:
             path:  /media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr
         - name: output
           nfs:
-            server: 192.168.1.38
-            path:  /volume1/media/tvSeries
+            server: 192.168.1.60
+            path:  /media/nate/Media12TB/media_downloads/downloads/complete/temptv
         - name: nfs-tv
           nfs:
             server: 192.168.1.38
