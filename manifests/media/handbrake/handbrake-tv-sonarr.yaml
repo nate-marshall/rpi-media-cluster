@@ -70,7 +70,7 @@ spec:
                 - /usr/bin/pgrep
                 - HandBrakeCLI
             initialDelaySeconds: 35
-            periodSeconds: 3600
+            periodSeconds: 900
             failureThreshold: 2
           ports:
             - containerPort: 5800
