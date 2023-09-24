@@ -30,7 +30,7 @@ move_next_directory() {
         fi
 
         # Move the directory to the destination
-        rsync -a --progress --remove-source-files "$download_dir/" "$destination_folder/$download_name/" | tee -a "$log_file"
+        rsync -a --remove-source-files --exclude="_UNPACK_*" "$download_dir/" "$destination_folder/$download_name/" | tee -a "$log_file"
         log_message "Moved: ${destination_folder}/${download_name}"
         curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${destination_folder}/${download_name}"' download in progress..\n"}' "${CHAT_URL}"
         sleep 5

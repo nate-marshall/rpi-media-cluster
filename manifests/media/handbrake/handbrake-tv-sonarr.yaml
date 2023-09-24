@@ -95,7 +95,7 @@ spec:
             path:  /media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr
         - name: output
           nfs:
-            server: 192.168.1.60
+            server: 192.168.1.38
             path:  /volume1/media/tvSeries
         - name: nfs-tv
           nfs:
