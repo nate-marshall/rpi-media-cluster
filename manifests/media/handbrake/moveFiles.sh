@@ -3,6 +3,7 @@
 # Set your folder paths
 source_folder="/media/nate/Media12TB/media_downloads/downloads/complete/temptv"
 temp_folder="/media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr"
+processed_file_list="/media/nate/Media12TB/media_downloads/tmp/sonarr_processed_files.txt"
 log_file="/media/nate/Media12TB/media_downloads/tmp/juggle.log"
 max_retries=30                              # Maximum number of retries
 retry_interval=120                          # Sleep interval in seconds between each check
@@ -15,17 +16,23 @@ log_message() {
 }
 
 # Function to move media files from source to temporary directory
+# Function to move media files from source to temporary directory
 move_to_temp() {
     local source="$1"
     local temp="$2"
     
-    # Use find to search for .mp4 and .mkv files in the source directory
+    # Use find to search for .mp4 and .mkv files in the source directory and its subdirectories
     find "$source" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print | while read -r media_file; do
         local media_name="$(basename "$media_file")"
+        local media_relative_path="${media_file#$source/}"  # Get the relative path from the source directory
         
-        # Move the media file to the temporary directory
-        mv "$media_file" "$temp/$media_name"
-        log_message "Moved to temp: $media_name"
+        # Create the corresponding subdirectory structure in the temporary directory
+        local temp_media_dir="$temp/$(dirname "$media_relative_path")"
+        mkdir -p "$temp_media_dir"
+        
+        # Move the media file to the temporary directory while preserving the subdirectory structure
+        mv "$media_file" "$temp_media_dir/$media_name"
+        log_message "Moved to temp: $media_relative_path"
     done
 }
 
@@ -72,15 +79,11 @@ fi
 log_message "Waiting for HandBrake to finish processing files"
 wait_for_handbrake
 
-# Add your logic here to move files from the temporary directory to the final output directory
-# You can also log the names of files being processed in this section.
-
-# Example:
-# for processed_file in "$temp_folder"/*; do
-#     log_message "Transcoding: $(basename "$processed_file")"
-#     # Add your HandBrake transcoding command here
-#     # Move the transcoded file to the final output directory
-# done
+# Update the processed file list
+for processed_file in "$temp_folder"/*; do
+    local file_name="$(basename "$processed_file")"
+    echo "$file_name" >> "$processed_file_list"
+done
 
 log_message "Files have been processed and moved to the final output directory."
 exit 0  # Exit with success status
