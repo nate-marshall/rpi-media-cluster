@@ -123,7 +123,7 @@ spec:
         - name: PGID
           value: "1000"
         - name: PUID
-          value: "998"
+          value: "1000"
         - name: VERSION
           value: latest
         - name: TZ

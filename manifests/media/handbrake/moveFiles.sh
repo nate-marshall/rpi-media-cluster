@@ -86,4 +86,3 @@ for processed_file in "$temp_folder"/*; do
 done
 
 log_message "Files have been processed and moved to the final output directory."
-exit 0  # Exit with success status

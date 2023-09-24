@@ -30,7 +30,7 @@ spec:
 #            periodSeconds: 30
           env:
             - name: PUID
-              value: "998"
+              value: "1000"
             - name: PGID
               value: "1000"
             - name: TZ

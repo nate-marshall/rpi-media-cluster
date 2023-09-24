@@ -31,7 +31,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: USER_ID
-              value: "998"
+              value: "1000"
             - name: GROUP_ID
               value: "1000"
             - name: UMASK
