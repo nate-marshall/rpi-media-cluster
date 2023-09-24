@@ -24,15 +24,15 @@ move_next_directory() {
         download_name="$(basename "$download_dir")"
 
         # Check if the folder starts with "_UNPACK_"
-        if [[ "$download_name" == _UNPACK_* ]]; then
+        if [[ "$download_name" == "_UNPACK_"* ]]; then
             log_message "Ignoring folder: $download_name"
             continue
         fi
 
         # Move the directory to the destination
-        rsync -a --remove-source-files "$download_dir/" "$destination_folder/$download_name/" | tee -a "$log_file"
-        log_message "Moved: $download_name"
-        curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${download_name}"' download in progress..\n"}' "${CHAT_URL}"
+        rsync -a --progress --remove-source-files "$download_dir/" "$destination_folder/$download_name/" | tee -a "$log_file"
+        log_message "Moved: ${destination_folder}/${download_name}"
+        curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${destination_folder}/${download_name}"' download in progress..\n"}' "${CHAT_URL}"
         sleep 5
         return 0  # Return success
     done
@@ -52,28 +52,28 @@ wait_for_handbrake() {
     local retries=0
     while [ "$retries" -lt "$max_retries" ]; do
         if [ "$(ls -A "$handbrake_watch_folder")" ]; then
-            log_message "HandBrake is still transcoding. Retry $((retries+1)) of $max_retries..."
+            log_message "HandBrake is still transcoding ${destination_folder}/${download_name}. Retry $((retries+1)) of $max_retries..."
             sleep "$retry_interval"
             ((retries++))
         else
-            log_message "HandBrake has finished transcoding."
+            log_message "HandBrake has finished transcoding ${destination_folder}/${download_name}."
             break
         fi
     done
     if [ "$retries" -eq "$max_retries" ]; then
         log_message "Max retries reached. Exiting with non-zero status."
-        curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${download_name}"' failed to transcode in time. Max retries reached."}' "${CHAT_URL}"
+        curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${destination_folder}/${download_name}"' failed to transcode in time. Max retries reached."}' "${CHAT_URL}"
     fi
 }
 
 # Move files from SABnzbd to HandBrake one directory at a time
-log_message "Starting file transfer from SABnzbd to HandBrake"
+log_message "Starting file transfer from SABnzbd to HandBrake. ${sabnzbd_complete_folder} -- ${handbrake_watch_folder}"
 while move_next_directory "$sabnzbd_complete_folder" "$handbrake_watch_folder"; do
     :
 done
 
 # Wait for HandBrake to finish transcoding
-log_message "Waiting for HandBrake to finish transcoding"
+log_message "Waiting for HandBrake to finish transcoding. ${destination_folder}/${download_name}"
 wait_for_handbrake
 
 # Cleanup the HandBrake watch folder
