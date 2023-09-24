@@ -7,7 +7,7 @@ metadata:
   labels:
     app: handbrake-tv-sonarr
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -70,7 +70,7 @@ spec:
                 - /usr/bin/pgrep
                 - HandBrakeCLI
             initialDelaySeconds: 35
-            periodSeconds: 3600
+            periodSeconds: 600
             failureThreshold: 2
           ports:
             - containerPort: 5800
