@@ -20,6 +20,13 @@ move_files() {
     for download_dir in "$source_folder"/*; do
         [ -d "$download_dir" ] || continue  # Check if it's a directory
         download_name="$(basename "$download_dir")"
+
+        # Check if the folder starts with "_UNPACK_"
+        if [[ "$download_name" == _UNPACK_* ]]; then
+            log_message "Ignoring folder: $download_name"
+            continue
+        fi
+
         rsync -a --remove-source-files "$download_dir/" "$destination_folder/$download_name/" | tee -a "$log_file"
         log_message "Moved: $download_name"
         sleep 5
