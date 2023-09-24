@@ -4,8 +4,8 @@
 sabnzbd_complete_folder="/media/nate/Media12TB/media_downloads/downloads/complete/temptv"
 handbrake_watch_folder="/media/nate/Media12TB/media_downloads/tmp/tv_from_sonarr"
 log_file="/media/nate/Media12TB/media_downloads/tmp/juggle.log"  # Specify the path to your log file
-max_retries=10  # Maximum number of retries
-retry_interval=60  # Sleep interval in seconds between each check
+max_retries=30  # Maximum number of retries
+retry_interval=120  # Sleep interval in seconds between each check
 
 # Function to log messages to a file
 log_message() {
@@ -14,9 +14,11 @@ log_message() {
 }
 
 # Function to move files from source to destination using rsync
-move_files() {
+move_next_directory() {
     source_folder="$1"
     destination_folder="$2"
+    
+    # Find the first available directory in the source folder
     for download_dir in "$source_folder"/*; do
         [ -d "$download_dir" ] || continue  # Check if it's a directory
         download_name="$(basename "$download_dir")"
@@ -27,15 +29,21 @@ move_files() {
             continue
         fi
 
+        # Move the directory to the destination
         rsync -a --remove-source-files "$download_dir/" "$destination_folder/$download_name/" | tee -a "$log_file"
         log_message "Moved: $download_name"
+        curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${download_name}"' download in progress..\n"}' "${CHAT_URL}"
         sleep 5
+        return 0  # Return success
     done
+
+    # No directories found in the source folder
+    return 1  # Return failure
 }
 
 # Function to cleanup the HandBrake watch folder
 cleanup_handbrake() {
-    rm -rf "$handbrake_watch_folder"/*
+    rm -rf "${handbrake_watch_folder:?}/"*
     log_message "Cleaned up HandBrake watch folder"
 }
 
@@ -53,18 +61,21 @@ wait_for_handbrake() {
         fi
     done
     if [ "$retries" -eq "$max_retries" ]; then
-        log_message "Max retries reached. Exiting without waiting further."
+        log_message "Max retries reached. Exiting with non-zero status."
+        curl -X POST -H 'Content-Type: application/json' -d '{"text": "'"${download_name}"' failed to transcode in time. Max retries reached."}' "${CHAT_URL}"
     fi
 }
 
-# Move files from SABnzbd to HandBrake
+# Move files from SABnzbd to HandBrake one directory at a time
 log_message "Starting file transfer from SABnzbd to HandBrake"
-move_files "$sabnzbd_complete_folder" "$handbrake_watch_folder"
+while move_next_directory "$sabnzbd_complete_folder" "$handbrake_watch_folder"; do
+    :
+done
 
 # Wait for HandBrake to finish transcoding
 log_message "Waiting for HandBrake to finish transcoding"
 wait_for_handbrake
 
 # Cleanup the HandBrake watch folder
-log_message "Starting cleanup of HandBrake watch folder"
-cleanup_handbrake
+# log_message "Starting cleanup of HandBrake watch folder"
+# cleanup_handbrake
