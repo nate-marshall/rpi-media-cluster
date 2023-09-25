@@ -121,9 +121,9 @@ spec:
         - name: PLEX_CLAIM
           value: ""
         - name: PGID
-          value: "1000"
+          value: "1002"
         - name: PUID
-          value: "1000"
+          value: "998"
         - name: VERSION
           value: latest
         - name: TZ

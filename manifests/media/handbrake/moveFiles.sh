@@ -16,7 +16,6 @@ log_message() {
 }
 
 # Function to move media files from source to temporary directory
-# Function to move media files from source to temporary directory
 move_to_temp() {
     local source="$1"
     local temp="$2"
@@ -26,13 +25,16 @@ move_to_temp() {
         local media_name="$(basename "$media_file")"
         local media_relative_path="${media_file#$source/}"  # Get the relative path from the source directory
         
+        # Remove spaces from the filename
+        local sanitized_media_name="${media_name// /_}"
+        
         # Create the corresponding subdirectory structure in the temporary directory
         local temp_media_dir="$temp/$(dirname "$media_relative_path")"
         mkdir -p "$temp_media_dir"
         
         # Move the media file to the temporary directory while preserving the subdirectory structure
-        mv "$media_file" "$temp_media_dir/$media_name"
-        log_message "Moved to temp: $media_relative_path"
+        mv "$media_file" "$temp_media_dir/$sanitized_media_name"
+        log_message "Moved from: $media_file to: $temp_media_dir/$sanitized_media_name"
     done
 }
 
@@ -49,7 +51,8 @@ wait_for_handbrake() {
         if [ -n "$(ls -A "$temp_folder")" ]; then
             log_message "HandBrake is still processing files:"
             for processing_file in "$temp_folder"/*; do
-                log_message "Processing: $(basename "$processing_file")"
+                local processing_name="$(basename "$processing_file")"
+                log_message "Processing: $processing_name"
             done
             log_message "Retry $((retries+1)) of $max_retries..."
             ((retries++))
@@ -82,7 +85,8 @@ wait_for_handbrake
 # Update the processed file list
 for processed_file in "$temp_folder"/*; do
     local file_name="$(basename "$processed_file")"
-    echo "$file_name" >> "$processed_file_list"
+    local file_path="$temp_folder/$file_name"
+    echo "$file_path" >> "$processed_file_list"
 done
 
 log_message "Files have been processed and moved to the final output directory."
