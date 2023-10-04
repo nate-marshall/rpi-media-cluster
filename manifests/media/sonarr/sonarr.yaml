@@ -55,10 +55,16 @@ spec:
               name: nfs-m5nas
             - mountPath: /nfs/mediaAndrew
               name: nfs-b4nas
+            - mountPath: /nfs/backups
+              name: nfs-backups
       dnsConfig:
         nameservers:
           - 1.1.1.1
       volumes:
+        - name: nfs-backups
+          nfs:
+            server: 192.168.1.38
+            path:  /volume1/m5backups/sonarr
         - name: nfs-m5nas
           nfs:
             server: 192.168.1.38
