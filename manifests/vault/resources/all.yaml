@@ -352,9 +352,9 @@ spec:
 
       securityContext:
         runAsNonRoot: true
-        runAsGroup: 1000
-        runAsUser: 100
-        fsGroup: 1000
+        runAsGroup: 1002
+        runAsUser: 998
+        fsGroup: 1002
       hostNetwork: false
       containers:
         - name: sidecar-injector
@@ -465,9 +465,9 @@ spec:
 
       securityContext:
         runAsNonRoot: true
-        runAsGroup: 1000
-        runAsUser: 100
-        fsGroup: 1000
+        runAsGroup: 1002
+        runAsUser: 998
+        fsGroup: 1002
       hostNetwork: false
       volumes:
 
