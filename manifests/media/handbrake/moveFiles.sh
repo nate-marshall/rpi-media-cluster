@@ -19,21 +19,22 @@ log_message() {
 move_to_temp() {
     local source="$1"
     local temp="$2"
-    
+
     # Use find to search for .mp4 and .mkv files in the source directory and its subdirectories
-    find "$source" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -print | while read -r media_file; do
+    find "$source" -type f \( -iname "*.mp4" -o -iname "*.mkv" \) -not -path "$source/_UNPACK*" -print | while read -r media_file; do
         local media_name="$(basename "$media_file")"
         local media_relative_path="${media_file#$source/}"  # Get the relative path from the source directory
-        
+
         # Remove spaces from the filename
         local sanitized_media_name="${media_name// /_}"
-        
+
         # Create the corresponding subdirectory structure in the temporary directory
         local temp_media_dir="$temp/$(dirname "$media_relative_path")"
         mkdir -p "$temp_media_dir"
-        
+
         # Move the media file to the temporary directory while preserving the subdirectory structure
         mv "$media_file" "$temp_media_dir/$sanitized_media_name"
+        sudo chmod -R 777 "${temp_folder}"
         log_message "Moved from: $media_file to: $temp_media_dir/$sanitized_media_name"
     done
 }
@@ -42,11 +43,11 @@ move_to_temp() {
 wait_for_handbrake() {
     local retries=0
     local files_processing=1
-    
+
     while [ $retries -lt $max_retries ] && [ $files_processing -eq 1 ]; do
         sleep $retry_interval
         files_processing=0
-        
+
         # Check if any files are still in the temporary directory (being processed by HandBrake)
         if [ -n "$(ls -A "$temp_folder")" ]; then
             log_message "HandBrake is still processing files:"
@@ -59,7 +60,7 @@ wait_for_handbrake() {
             files_processing=1
         fi
     done
-    
+
     if [ $retries -eq $max_retries ]; then
         log_message "Max retries reached. Exiting with non-zero status."
         exit 1
@@ -83,9 +84,9 @@ log_message "Waiting for HandBrake to finish processing files"
 wait_for_handbrake
 
 # Update the processed file list
-for processed_file in "$temp_folder"/*; do
+for processed_file in "$source_folder"/*; do
     local file_name="$(basename "$processed_file")"
-    local file_path="$temp_folder/$file_name"
+    local file_path="$processed_file"
     echo "$file_path" >> "$processed_file_list"
 done
 

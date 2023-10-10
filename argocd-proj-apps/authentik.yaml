@@ -1,0 +1,66 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: authentik-project
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Authentik Project
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: '*'
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  orphanedResources:
+    warn: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  project: authentik-project
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  source:
+    chart: authentik/authentik
+    repoURL: https://charts.goauthentik.io
+    targetRevision: 2023.8.3
+    helm:
+      values: |
+        authentik:
+          secret_key: "PleaseGenerateA50CharKey"
+          # This sends anonymous usage-data, stack traces on errors and
+          # performance data to sentry.beryju.org, and is fully opt-in
+          error_reporting:
+            enabled: true
+          postgresql:
+            password: "ThisIsNotASecurePassword"
+
+        ingress:
+          enabled: true
+          hosts:
+            - host: authentik.domain.tld
+              paths:
+                - path: "/"
+                  pathType: Prefix
+
+        postgresql:
+          enabled: true
+          postgresqlPassword: "ThisIsNotASecurePassword"
+        redis:
+          enabled: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
