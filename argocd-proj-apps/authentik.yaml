@@ -32,7 +32,7 @@ spec:
     namespace: authentik
   source:
     chart: goauthentik/authentik
-    repoURL: https://charts.goauthentik.io
+    # repoURL: https://charts.goauthentik.io
     targetRevision: 2023.8.3
     helm:
       values: |
