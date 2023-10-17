@@ -31,9 +31,9 @@ spec:
     server: https://kubernetes.default.svc
     namespace: authentik
   source:
-    chart: goauthentik/authentik
+    chart: authentik/authentik
     repoURL: https://charts.goauthentik.io
-    targetRevision: latest #2023.8.3
+    targetRevision: 2023.8.3
     helm:
       values: |
         authentik:
