@@ -39,6 +39,13 @@ move_to_temp() {
     done
 }
 
+# Update the processed file list
+for processed_file in "$source_folder"/*; do
+    local file_name="$(basename "$processed_file")"
+    echo "$file_name" >> "$processed_file_list"
+    log_message "Processed: $file_name"
+done
+
 # Function to wait for HandBrake to finish processing files
 wait_for_handbrake() {
     local retries=0
@@ -82,12 +89,5 @@ fi
 # Wait for HandBrake to finish processing files
 log_message "Waiting for HandBrake to finish processing files"
 wait_for_handbrake
-
-# Update the processed file list
-for processed_file in "$source_folder"/*; do
-    local file_name="$(basename "$processed_file")"
-    local file_path="$processed_file"
-    echo "$file_path" >> "$processed_file_list"
-done
 
 log_message "Files have been processed and moved to the final output directory."
