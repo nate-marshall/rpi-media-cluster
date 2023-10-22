@@ -6,5 +6,5 @@ resources:
 images:
   - name: msmi/nodejs-poolcontroller-dashpanel
     #newTag: "10MAR2303"
-    newTag: "latest"
+    newTag: "8.0.3"
 namespace: pool

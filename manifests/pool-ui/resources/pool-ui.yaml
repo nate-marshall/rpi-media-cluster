@@ -50,7 +50,7 @@ spec:
       - image: msmi/nodejs-poolcontroller-dashpanel:00000
         imagePullPolicy: Always
         name: pool-ui
-        command: ["tail", "-f", "/dev/null"]
+        # command: ["tail", "-f", "/dev/null"]
         ports:
         - containerPort: 5150
         resources:
