@@ -50,7 +50,7 @@ spec:
       - image: msmi/nodejs-poolcontroller-dashpanel:00000
         imagePullPolicy: Always
         name: pool-ui
-        # command: ["tail", "-f", "/dev/null"]
+        command: ["tail", "-f", "/dev/null"]
         ports:
         - containerPort: 5150
         resources:
@@ -60,16 +60,16 @@ spec:
           limits:
             cpu: "1000m"
             memory: "1000Mi"  
-        # volumeMounts:
-        # - mountPath: /app/config.json
-        #   name: pool-ui-configjson
-        #   subPath: config.json
+        volumeMounts:
+        - mountPath: /app/config.json
+          name: pool-ui-configjson
+          subPath: config.json
       hostname: pool-ui
       restartPolicy: Always
-      # volumes:
-      # - name: pool-ui-configjson
-      #   configMap:
-      #     name: pool-ui-configjson
+      volumes:
+      - name: pool-ui-configjson
+        configMap:
+          name: pool-ui-configjson
 ---
 apiVersion: v1
 kind: Service
