@@ -56,12 +56,13 @@ metadata:
     tier: frontend
   namespace: yelb
 spec:
-  type: NodePort
+  loadBalancerIP: 192.168.1.186
+  type: LoadBalancer
+  externalTrafficPolicy: Local
   ports:
   - port: 80
     protocol: TCP
     targetPort: 80
-    nodePort: 30001
   selector:
     app: yelb-ui
     tier: frontend
