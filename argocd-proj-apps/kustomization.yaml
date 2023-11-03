@@ -5,6 +5,7 @@ resources:
   - authentik.yaml
   # - cert-manager.yaml
   # - cert-manager-issuer.yaml
+  - demo-apps
   # - haproxy.yaml
   # - kube-system.yaml
   - media.yaml
