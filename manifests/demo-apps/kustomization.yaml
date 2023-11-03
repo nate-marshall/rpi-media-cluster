@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - yelb/yelb-all.yaml
-  - https://github.com/argoproj/argocd-example-apps/blob/master/kustomize-guestbook
+  - guestbook-kustomize/guestbook-all.yaml
 # images:
 #   - name: msmi/nodejs-poolcontroller-dashpanel
 #     #newTag: "10MAR2303"
