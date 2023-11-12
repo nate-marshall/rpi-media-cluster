@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - yelb/yelb-all.yaml
   #Online Boutique
-#   - github.com/GoogleCloudPlatform/microservices-demo/kustomize/base
+  - github.com/GoogleCloudPlatform/microservices-demo/kustomize/base
 # components:
 # - github.com/GoogleCloudPlatform/microservices-demo/kustomize/components/cymbal-branding
 # - github.com/GoogleCloudPlatform/microservices-demo/kustomize/components/google-cloud-operations
