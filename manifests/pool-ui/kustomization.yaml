@@ -7,7 +7,7 @@ images:
   # - name: n8marshall/nodejs-poolcontroller-dashpanel
     # newTag: "7439736423"
   - name: msmi/nodejs-poolcontroller-dashpanel
-    # newTag: "latest"
+    newTag: "latest"
     # newTag: "8.0.0"
-    newTag: "7.6.1"
+    # newTag: "7.6.1"
 namespace: pool
