@@ -11,7 +11,7 @@ resources:
   - media.yaml
   # - metallb.yaml
   - monitoring.yaml
-  - pool.yaml
+  # - pool.yaml
   - prometheus.yaml
   # - signoz.yaml
   # - vault.yaml

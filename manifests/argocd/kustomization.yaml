@@ -4,7 +4,7 @@ images:
   - name: quay.io/argoproj/argocd
     newTag: v2.7.7
 resources:
-  - https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.7.7
+  - https://github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.10.1
   # - resources/argocd-ingress.yaml
   - ../../argocd-proj-apps
   - resources/cmp-plugin.yaml
