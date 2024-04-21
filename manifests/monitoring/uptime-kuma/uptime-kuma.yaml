@@ -39,6 +39,7 @@ metadata:
   namespace: monitoring
   annotations:
     volume.beta.kubernetes.io/storage-provisioner: rancher.io/local-path
+    volume.kubernetes.io/selected-node: k3s-node-25
     path: k3s-node-25/
 spec:
   accessModes:
