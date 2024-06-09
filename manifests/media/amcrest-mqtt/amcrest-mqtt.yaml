@@ -55,7 +55,8 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
-          image: dchesterton/amcrest2mqtt:latest
+          # image: dchesterton/amcrest2mqtt:latest
+          image: acshef/amcrest2mqtt:latest
       dnsConfig:
         nameservers:
           - 1.1.1.1
