@@ -1,0 +1,143 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netalertx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netalertx
+  template:
+    metadata:
+      labels:
+        app: netalertx
+    spec:
+      hostNetwork: true
+      containers:
+      - name: netalertx
+        image: jokobsk/netalertx:latest
+        resources:
+          limits:
+            memory: "2Gi"
+        securityContext:
+          allowPrivilegeEscalation: false
+        env:
+        - name: TZ
+          value: "America/Chicago"
+        - name: PORT
+          value: "17811"
+        - name: HOST_USER_ID
+          value: "1000"
+        - name: HOST_USER_GID
+          value: "1000"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: db-volume
+          mountPath: /app/db
+        - name: logs-volume
+          mountPath: /app/front/log
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 17811
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: config-pvc
+      - name: db-volume
+        persistentVolumeClaim:
+          claimName: db-pvc
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: logs-pvc
+      restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netalertx
+spec:
+  selector:
+    app: netalertx
+  ports:
+    - protocol: TCP
+      port: 17811
+      targetPort: 17811
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.1.184
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: config-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /volume1/k8s_volumes/netalertx/config
+    server: 192.168.1.38
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: config-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /volume1/k8s_volumes/netalertx/db
+    server: 192.168.1.38
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: logs-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /volume1/k8s_volumes/netalertx/logs
+    server: 192.168.1.38
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: logs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

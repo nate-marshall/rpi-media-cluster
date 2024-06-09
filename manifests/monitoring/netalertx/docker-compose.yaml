@@ -1,0 +1,27 @@
+services:
+  netalertx:
+     image: jokobsk/netalertx:latest   # Name of the image we will be using
+     container_name: netalertx         # Name of the container as it will show in portainer and docker ps commands 
+     healthcheck:                      # This is the healthcheck for the container.  You will need to put the IP of your machine and the port number from below
+      test: curl -f http://192.168.1.1:17811/ || exit 1
+     mem_limit: 4g                     # This is the memory limit for the container so that it does not take too many resources
+     security_opt:
+      - no-new-privileges:true         # This flag ensures that the processes running within the container cannot escalate their privileges beyond what they were started with
+     volumes:
+      - config:/app/config:rw          # These are the volumes for the configuration, database, and log files
+      - db:/app/db:rw                  # If you prefer, you can map the left side of the : to a full path on your local machine instead of a vlolume mapping like I have here
+      - logs:/app/front/log:rw
+     environment:
+      TZ: America/Chicago              # Set your applicable timezone here
+      PORT: 17811                      # This is the port for your local machine.  If you change this you will also want to change the healthcheck port above
+      HOST_USER_ID: 1000               # This is the host VM UserID.  You will want a user that is not root.  To get this use the command 'uid' in the console.  Typically 1000 is a good choice 
+      HOST_USER_GID: 1000              # This is the host VM GroupID.  You will want a user that is not root.  To get this use the command 'gid' in the console.  Typically 1000 is a good choice 
+      # DANGER MAKE SURE THIS IS REMOVED FOR PRODUCTION!!!!
+      # ALWAYS_FRESH_INSTALL: true       # Do not enable this in production.  It will wipe all configurations and log files when the container starts.  Good if you have issues and need to restart, but DO NOT do in production
+     network_mode: host                # You must set this to host so that you are using the host network.  Anything else will cause this servie to fail
+     restart: on-failure:5             # This will restart the container if it exits with a non-zero exit code (crash or error), and it will try to restart 5 times before stopping
+     
+volumes:                               # This sets up each of the volumes that we mapped above
+  config:
+  db:
+  logs:
