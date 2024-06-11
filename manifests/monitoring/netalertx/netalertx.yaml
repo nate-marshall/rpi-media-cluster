@@ -16,6 +16,7 @@ spec:
       containers:
       - name: netalertx
         image: jokobsk/netalertx:latest
+        imagePullPolicy: Always
         # resources:
         #   limits:
         #     memory: "2Gi"
