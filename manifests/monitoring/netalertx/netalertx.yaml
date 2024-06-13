@@ -23,6 +23,8 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
         env:
+        - name: LOG_LEVEL
+          value: "debug"
         - name: TZ
           value: "America/Chicago"
         - name: PORT
