@@ -41,12 +41,12 @@ spec:
           mountPath: /app/db
         - name: logs-volume
           mountPath: /app/front/log
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 17811
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 17811
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
       volumes:
       - name: config-volume
         persistentVolumeClaim:
