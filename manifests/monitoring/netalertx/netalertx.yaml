@@ -15,7 +15,7 @@ spec:
       hostNetwork: true
       containers:
       - name: netalertx
-        command: ["tail", "-f", "/dev/null"]
+        # command: ["tail", "-f", "/dev/null"]
         image: jokobsk/netalertx:latest
         imagePullPolicy: Always
         # resources:
